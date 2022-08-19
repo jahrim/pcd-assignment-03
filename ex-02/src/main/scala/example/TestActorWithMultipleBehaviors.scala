@@ -41,6 +41,7 @@ object ActorWithMultipleBehaviors:
 
     /** Messages */
     enum Message { case Zero, One, Two }
+
     /** Behavior A */
     object BehaviorA:
         def apply(localState: Int): Behavior[Message] =
