@@ -7,6 +7,7 @@ import util.math.V2d;
 import mvc.view.SimulationView;
 
 import java.util.*;
+import java.util.function.Consumer;
 import java.util.stream.Collectors;
 
 /**
@@ -154,6 +155,8 @@ public class SimulationBuilder {
         private long currentIteration;
         private double virtualTime;
 
+        private final Collection<Consumer<Long>> onIterationCompleted;
+
         private Simulation(SimulationView viewer, long maxIterations, double dt, Collection<Body> bodies, Boundary bounds, int numberOfSimulationActors) {
             this.viewer = viewer;
             this.maxIterations = maxIterations;
@@ -163,6 +166,7 @@ public class SimulationBuilder {
             this.currentIteration = 0;
             this.virtualTime = 0;
             this.numberOfSimulationActors = numberOfSimulationActors;
+            this.onIterationCompleted = new LinkedList<>();
         }
         private Simulation(Simulation simulation){
             this(
@@ -175,14 +179,26 @@ public class SimulationBuilder {
             );
             this.currentIteration = simulation.currentIteration;
             this.virtualTime = simulation.virtualTime;
+            this.onIterationCompleted.addAll(simulation.onIterationCompleted);
         }
-
         /** @return a copy of this simulation. */
         public Simulation getSnapshot() { return SimulationBuilder.buildCopyOf(this); }
+
         /** @return the amount of time that passed since the beginning of the simulation. */
         public double getVirtualTime(){ return this.virtualTime; }
         /** @return the current iteration of this simulation. */
         public long getCurrentIteration(){ return this.currentIteration; }
+        /** @return true if this simulation has a viewer attached, false otherwise. */
+        public boolean hasViewer() { return this.viewer != null; }
+        /** @return true if this simulation is not ended, false otherwise. */
+        public boolean isRunning() { return this.currentIteration < this.maxIterations; }
+
+        /**
+         * Adds the specified callback to the handlers to be executed when this simulation completes an iteration.
+         * @param callback the specified callback, consuming the number of the current iteration
+         * @return this
+         */
+        public Simulation onIterationComplete(Consumer<Long> callback){ this.onIterationCompleted.add(callback); return this; }
         /**
          * Increase the amount of time that passed since the beginning of the simulation
          * by the duration of an iteration.
@@ -191,6 +207,27 @@ public class SimulationBuilder {
         public Simulation completeIteration(){
             this.currentIteration++;
             this.virtualTime += this.dt;
+            this.onIterationCompleted.forEach(callback -> callback.accept(this.currentIteration));
+            return this;
+        }
+        /**
+         * Replaces some bodies in the simulation with the specified bodies.
+         * If an updated body has an id that is present in the simulation, the corresponding
+         * body will be substituted with the new one, otherwise the updated body will be added
+         * to the simulation.
+         * @param updatedBodies the specified bodies
+         * @return this
+         */
+        public Simulation updateBodies(Collection<Body> updatedBodies){
+            updatedBodies.forEach(body -> this.bodies.put(body.getId(), body));
+            return this;
+        }
+        /**
+         * Updates the view of this simulation if any viewer is attached to it.
+         * @return this
+         */
+        public Simulation updateView(){
+            if (this.hasViewer()){ this.viewer.display(this); }
             return this;
         }
     }

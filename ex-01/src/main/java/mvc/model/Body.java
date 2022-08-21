@@ -122,7 +122,7 @@ public class Body {
                 try {
                     V2d forceByOtherBody = this.computeRepulsiveForceBy(otherBody);
                     totalForce.sum(forceByOtherBody);
-                } catch (Exception ex) { ex.printStackTrace(); }
+                } catch (InfiniteForceException ignored) { }
             }
         }
         totalForce.sum(this.getCurrentFrictionForce());    //total friction force

@@ -37,6 +37,8 @@ lazy val exercise02 = (project in file("ex-02")).settings(
   name := "exercise02",
   scalaVersion := "3.1.1",
   libraryDependencies ++= Seq(
+    "com.typesafe.akka" %% "akka-cluster-typed" % akkaVersion,
+    "com.typesafe.akka" %% "akka-serialization-jackson" % akkaVersion,
     "ch.qos.logback" % "logback-classic" % "1.2.11",
     "org.scalatest" %% "scalatest" % "3.2.12" % Test,
   )
