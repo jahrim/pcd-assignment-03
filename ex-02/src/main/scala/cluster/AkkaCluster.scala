@@ -7,7 +7,7 @@ import akka.cluster.ClusterEvent.*
 import akka.cluster.typed.{Cluster, Subscribe}
 import com.typesafe.config.{Config, ConfigFactory}
 
-import scala.collection.JavaConverters.*
+import scala.jdk.CollectionConverters.*
 
 /**
  * Model an akka cluster with the specified configuration.
@@ -38,7 +38,7 @@ class AkkaCluster(private val config: Config):
     def join[A](behavior: Behavior[A], hostName: String = "127.0.0.1", port: Int = 0): ActorRef[A] =
         ActorSystem[A](
             behavior,
-            this.seedNodes(0).system,
+            this.seedNodes.head.system,
             ConfigFactory.parseString(
                 s"""
                    | akka.remote.artery.canonical: {

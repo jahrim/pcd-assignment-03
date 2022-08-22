@@ -3,12 +3,8 @@
   <component name="CompilerConfiguration">
     <bytecodeTargetLevel>
       <module name="assignment03" target="1.11" />
-      <module name="Assignment03-Exercise01" target="1.11" />
-      <module name="Assignment03-Exercise02" target="1.11" />
       <module name="exercise01" target="1.11" />
       <module name="exercise02" target="1.11" />
-      <module name="exercise1" target="1.11" />
-      <module name="exercise2" target="1.11" />
     </bytecodeTargetLevel>
   </component>
 </project>
