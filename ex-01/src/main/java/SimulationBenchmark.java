@@ -25,13 +25,13 @@ public class SimulationBenchmark {
     /** The set of #iterations arguments to test. */
     private final static List<Integer> nIterationsArgs = List.of(1000, 5000, 10000);
     /** The set of #actors arguments to test. */
-    private final static List<Integer> nActorsArgs = List.of(1, 2, 4, 8, MAX_ACTORS);
+    private final static List<Integer> nActorsArgs = List.of(1, 2, 4, 8, MAX_ACTORS, 2*MAX_ACTORS);
     /** A map from a specified tuple of arguments to the time of execution of the correspondent simulation. */
     private final static Map<SimulationArgs, Long> timeMap = new ConcurrentHashMap<>();
 
     private static final Config disableLoggingConfig = ConfigFactory.load("disable-logging");
 
-    public static void main(String[] args) throws InterruptedException {
+    public static void main(String[] args) {
         Semaphore simulationEnded = new Semaphore(0);
         for (Integer nBodies: nBodiesArgs) {
             for (Integer nIterations: nIterationsArgs) {
