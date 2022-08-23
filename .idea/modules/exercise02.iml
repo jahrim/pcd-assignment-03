@@ -1,11 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<module external.linked.project.id="exercise02 [file:/C:/Users/Gabry/Desktop/pcd-03/]" external.linked.project.path="$MODULE_DIR$/../../ex-02" external.root.project.path="$MODULE_DIR$/../.." external.system.id="SBT" type="JAVA_MODULE" version="4">
+<module external.linked.project.id="exercise02 [file:/C:/Users/Madi/progetti/pcd/cons3/]" external.linked.project.path="$MODULE_DIR$/../../ex-02" external.root.project.path="$MODULE_DIR$/../.." external.system.id="SBT" type="JAVA_MODULE" version="4">
   <component name="NewModuleRootManager" LANGUAGE_LEVEL="JDK_11">
     <output url="file://$MODULE_DIR$/../../ex-02/target/scala-3.1.1/classes" />
     <output-test url="file://$MODULE_DIR$/../../ex-02/target/scala-3.1.1/test-classes" />
     <exclude-output />
     <content url="file://$MODULE_DIR$/../../ex-02">
-      <sourceFolder url="file://$MODULE_DIR$/../../ex-02/src/main/java" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/../../ex-02/src/main/resources" type="java-resource" />
       <sourceFolder url="file://$MODULE_DIR$/../../ex-02/src/main/scala" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/../../ex-02/src/test/java" isTestSource="true" />

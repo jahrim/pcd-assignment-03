@@ -28,6 +28,8 @@ object C:
         val MAX_PLUVIOMETERS_PER_ZONE: Int = 3
         /** The probability of a pluviometer measuring a value greater than its threshold. */
         val PLUVIOMETER_SIGNAL_PROBABILITY: Double = 0.1
+        /** How much it takes for a fire station to be prepared to take care of an alarm. */
+        val PREPARATION_DURATION_MS: Long = 10000l
         /** How much it takes for a fire station to take care of an alarm. */
         val INTERVENTION_DURATION_MS: Long = 10000l
 

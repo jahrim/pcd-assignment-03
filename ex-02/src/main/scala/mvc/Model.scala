@@ -46,8 +46,8 @@ object Model:
      */
     case class Zone(override val position: Point2D, override val width: Double, override val height: Double)
       extends domain.Zone(position, width, height):
-        override type FireStation = domain.FireStation
-        override type Pluviometer = domain.Pluviometer
+        override type FireStation = domain.FireStation[Zone]
+        override type Pluviometer = domain.Pluviometer[Zone]
 
     /**
      * Companion object of [[Zone]].
@@ -59,6 +59,6 @@ object Model:
             zone.addFireStations(createFireStationIn(zone))
             zone
 
-        private[Zone] def createPluviometerIn(zone: Zone): Pluviometer =
-            Pluviometer.withRandomMeasurements(zone.randomPosition, C.City.PLUVIOMETER_SIGNAL_PROBABILITY)
-        private[Zone] def createFireStationIn(zone: Zone): FireStation = FireStation(zone.randomPosition)
+        private[Zone] def createPluviometerIn(zone: Zone): Pluviometer[Zone] =
+            Pluviometer.withRandomMeasurements(zone, zone.randomPosition, C.City.PLUVIOMETER_SIGNAL_PROBABILITY)
+        private[Zone] def createFireStationIn(zone: Zone): FireStation[Zone] = FireStation(zone, zone.randomPosition)
