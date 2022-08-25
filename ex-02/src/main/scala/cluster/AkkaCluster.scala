@@ -1,8 +1,8 @@
 package cluster
 
-import akka.actor.{Address, AddressFromURIString}
 import akka.actor.typed.*
 import akka.actor.typed.scaladsl.Behaviors
+import akka.actor.{Address, AddressFromURIString}
 import akka.cluster.ClusterEvent.*
 import akka.cluster.typed.{Cluster, Subscribe}
 import com.typesafe.config.{Config, ConfigFactory}
