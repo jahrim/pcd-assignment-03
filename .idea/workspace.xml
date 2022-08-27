@@ -5,37 +5,15 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="55825d0a-eb5d-488e-a6ac-f6809c2fcfff" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/.idea/uiDesigner.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ex-02/src/main/scala/actor/CityActor.scala" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ex-02/src/main/scala/actor/FireStationActor.scala" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ex-02/src/main/scala/actor/PluviometerActor.scala" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ex-02/src/main/scala/actor/ZoneActor.scala" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ex-02/src/main/scala/util/StateIn.scala" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.bsp/sbt.json" beforeDir="false" afterPath="$PROJECT_DIR$/.bsp/sbt.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/modules/assignment03-build.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/modules/assignment03-build.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/modules/assignment03.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/modules/assignment03.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/modules/exercise01.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/modules/exercise01.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/modules/exercise02.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/modules/exercise02.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/sbt.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/sbt.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/scala_compiler.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/scala_compiler.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/scala_settings.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/scala_settings.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ex-02/src/main/scala/util/Id.scala" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ex-02/src/main/scala/App.scala" beforeDir="false" afterPath="$PROJECT_DIR$/ex-02/src/main/scala/App.scala" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ex-02/src/main/scala/actor/CityActor.scala" beforeDir="false" afterPath="$PROJECT_DIR$/ex-02/src/main/scala/actor/CityActor.scala" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ex-02/src/main/scala/actor/FireStationActor.scala" beforeDir="false" afterPath="$PROJECT_DIR$/ex-02/src/main/scala/actor/FireStationActor.scala" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ex-02/src/main/scala/actor/PluviometerActor.scala" beforeDir="false" afterPath="$PROJECT_DIR$/ex-02/src/main/scala/actor/PluviometerActor.scala" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ex-02/src/main/scala/actor/ZoneActor.scala" beforeDir="false" afterPath="$PROJECT_DIR$/ex-02/src/main/scala/actor/ZoneActor.scala" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/ex-02/src/main/scala/cluster/AkkaCluster.scala" beforeDir="false" afterPath="$PROJECT_DIR$/ex-02/src/main/scala/cluster/AkkaCluster.scala" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ex-02/src/main/scala/cluster/message/CborSerializable.scala" beforeDir="false" afterPath="$PROJECT_DIR$/ex-02/src/main/scala/cluster/message/CborSerializable.scala" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/ex-02/src/main/scala/configuration/C.scala" beforeDir="false" afterPath="$PROJECT_DIR$/ex-02/src/main/scala/configuration/C.scala" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ex-02/src/main/scala/example/TestActorWithMultipleBehaviors.scala" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/ex-02/src/main/scala/mvc/ActorModel.scala" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/ex-02/src/main/scala/mvc/Model.scala" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/ex-02/src/main/scala/mvc/actor/FireStationActor.scala" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/ex-02/src/main/scala/mvc/actor/PluviometerActor.scala" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/ex-02/src/main/scala/mvc/actor/ZoneActor.scala" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/ex-02/src/main/scala/mvc/domain/City.scala" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/ex-02/src/main/scala/mvc/domain/FireStation.scala" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/ex-02/src/main/scala/mvc/domain/Pluviometer.scala" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/ex-02/src/main/scala/mvc/domain/Point2D.scala" beforeDir="false" afterPath="$PROJECT_DIR$/ex-02/src/main/scala/util/Point2D.scala" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ex-02/src/main/scala/mvc/domain/StateIn.scala" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/ex-02/src/main/scala/mvc/domain/Zone.scala" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/ex-02/src/main/scala/util/Point2D.scala" beforeDir="false" afterPath="$PROJECT_DIR$/ex-02/src/main/scala/util/Point2D.scala" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -104,7 +82,7 @@
     "RunOnceActivity.OpenProjectViewOnStart": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "SHARE_PROJECT_CONFIGURATION_FILES": "true",
-    "last_opened_file_path": "C:/Users/admin/Downloads/scala-intellij-bin-2022.3.381.zip",
+    "last_opened_file_path": "C:/Users/Public/Documents/Projects/pcd-03/ex-02/src/main/scala/util",
     "project.structure.last.edited": "Modules",
     "project.structure.proportion": "0.0",
     "project.structure.side.proportion": "0.2",
@@ -114,6 +92,9 @@
   }
 }]]></component>
   <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\Users\Public\Documents\Projects\pcd-03\ex-02\src\main\scala\util" />
+    </key>
     <key name="MoveFile.RECENT_KEYS">
       <recent name="C:\Users\Public\Documents\Projects\pcd-03\ex-02\src\main\scala\mvc\domain" />
     </key>

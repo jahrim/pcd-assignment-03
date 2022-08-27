@@ -21,7 +21,7 @@ object C:
             /** The area of the city. */
             val AREA: Double = HEIGHT * WIDTH
         /** The number of zones that the city is composed of. */
-        val NUMBER_OF_ZONES: Int = 6
+        val NUMBER_OF_ZONES: Int = 2
         /** The number of fire stations that are present in the city. */
         val NUMBER_OF_FIRE_STATIONS: Int = NUMBER_OF_ZONES
         /** How much time passes between two snapshots taken by the city actor. */

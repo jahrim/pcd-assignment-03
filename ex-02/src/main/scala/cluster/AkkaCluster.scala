@@ -33,9 +33,8 @@ class AkkaCluster(private val config: Config):
      * @param hostName the name of the specified host
      * @param port the port of the specified host
      * @tparam A the type of messages that can be handled by the specified actor
-     * @return a reference to the specified actor
      */
-    def join[A](behavior: Behavior[A], hostName: String = "127.0.0.1", port: Int = 0): ActorRef[A] =
+    def join[A](behavior: Behavior[A], hostName: String = "127.0.0.1", port: Int = 0): Unit =
         ActorSystem[A](
             behavior,
             this.seedNodes.head.system,
@@ -47,7 +46,7 @@ class AkkaCluster(private val config: Config):
                    | }
                    |""".stripMargin.replace("\n", " ")
             ).withFallback(this.config)
-        );
+        )
 
     /**
      * Model an actor that logs cluster events.

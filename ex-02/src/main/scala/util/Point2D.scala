@@ -1,5 +1,6 @@
 package util
 
+import cluster.message.CborSerializable
 import configuration.C.Log.*
 
 import java.util.Locale
@@ -9,7 +10,7 @@ import java.util.Locale
  * @param x the value of the first coordinate
  * @param y the value of the second coordinate
  */
-case class Point2D(x: Double, y: Double):
+case class Point2D(x: Double, y: Double) extends CborSerializable:
     /**
      * @param x the horizontal amount
      * @param y the vertical amount
