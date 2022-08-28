@@ -3,14 +3,17 @@ package util
 import cluster.message.CborSerializable
 import configuration.C.Log.*
 
-import java.util.Locale
-
 /**
  * Model a point in two dimensions.
  * @param x the value of the first coordinate
  * @param y the value of the second coordinate
  */
 case class Point2D(x: Double, y: Double) extends CborSerializable:
+    /**
+     * @param p the specified point
+     * @return the distance between this point and the specified point
+     */
+    def distance(p: Point2D): Double = Math.sqrt((this.x - p.x) * (this.x - p.x) + (this.y - p.y) * (this.y - p.y))
     /**
      * @param x the horizontal amount
      * @param y the vertical amount
@@ -31,7 +34,6 @@ case class Point2D(x: Double, y: Double) extends CborSerializable:
     def relocateX(x: Double): Point2D = Point2D(x, this.y)
     /** As [[relocate relocate(this.x,y)]]. */
     def relocateY(y: Double): Point2D = Point2D(this.x, y)
-
     override def toString = s"Point(${x.pretty},${y.pretty})"
 
 /**

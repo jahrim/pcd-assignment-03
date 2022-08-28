@@ -2,21 +2,20 @@ package actor
 
 import actor.*
 import actor.CityActor.*
-import actor.FireStationActor.FireStation
-import actor.FireStationActor.FireStation.{FireStationData, State}
-import actor.FireStationActor.FireStation.State.*
 import actor.FireStationActor.*
+import actor.FireStationActor.FireStation.State.*
+import actor.FireStationActor.FireStation.State
 import actor.PluviometerActor.Pluviometer
 import actor.ZoneActor.*
-import actor.ZoneActor.Zone
-import akka.actor.typed.{ActorRef, Behavior}
 import akka.actor.typed.receptionist.Receptionist.*
 import akka.actor.typed.receptionist.ServiceKey
 import akka.actor.typed.scaladsl.{Behaviors, Routers}
-import cluster.AkkaCluster
+import akka.actor.typed.Behavior
 import cluster.message.CborSerializable
 import configuration.C.FireStation.*
+import configuration.C.Zone.RANDOM_POSITION_PADDING
 import util.{Id, Point2D, StateIn}
+import scala.util.Random
 
 /**
  * Model the actor for a fire-station.
@@ -39,7 +38,7 @@ object FireStationActor:
 
   /**
    * @param fireStation the initial state of this fire-station actor
-   * @param cityId the identifier of the city this fire-station belongs to
+   * @param cityId      the identifier of the city this fire-station belongs to
    */
   def apply(fireStation: FireStation, cityId: String): Behavior[Message] =
     Behaviors.setup { context =>
@@ -89,12 +88,12 @@ object FireStationActor:
   /**
    * Model the state of a fire-station actor.
    * @param position the position of the fire-station
-   * @param id the identifier of this fire-station
+   * @param id       the identifier of this fire-station
    */
   case class FireStation(position: Point2D, id: String = Id.newId) extends StateIn[State](Available) with Id:
     /** @return the data representing this fire-station. */
     def data: FireStationData = FireStationData(position, id, state.ordinal)
-    override def toString: String = s"Firestation(#$id,$state,$position)"
+    override def toString: String = s"FireStation(#$id,$state,$position)"
   /**
    * Companion object of [[FireStation]].
    */
@@ -103,7 +102,7 @@ object FireStationActor:
      * @param zone the specified zone
      * @return a new fire-station randomly positioned in the specified zone.
      */
-    def random(zone: Zone): FireStation = FireStation(zone.randomPosition)
+    def random(zone: Zone): FireStation = FireStation(zone.randomPosition(RANDOM_POSITION_PADDING))
 
     /**
      * Model the state of a fire-station.
@@ -113,13 +112,19 @@ object FireStationActor:
       case Available
       /** State where the fire-fighters of this fire-station are busy taking care of an alarm. */
       case Busy
-
     /**
-     * Model the data representing a fire-station.
+     * Companion object of [[State]].
      */
-    case class FireStationData(position: Point2D, id: String = Id.newId, state: Int) extends CborSerializable:
-      /** @return the fire-station represented by this data. */
-      def fireStation: FireStation =
-        val fireStation = FireStation(position, id)
-        fireStation.become(State.fromOrdinal(state))
-        fireStation
+    object State:
+      /** @return a random zone state. */
+      def random: State = State.fromOrdinal(Random.nextInt(State.values.length))
+
+  /**
+   * Model the data representing a fire-station.
+   */
+  case class FireStationData(position: Point2D, id: String = Id.newId, state: Int) extends CborSerializable:
+    /** @return the fire-station represented by this data. */
+    def asFireStation: FireStation =
+      val fireStation = FireStation(position, id)
+      fireStation.become(State.fromOrdinal(state))
+      fireStation

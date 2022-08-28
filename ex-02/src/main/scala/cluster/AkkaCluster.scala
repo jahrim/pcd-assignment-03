@@ -6,7 +6,6 @@ import akka.actor.{Address, AddressFromURIString}
 import akka.cluster.ClusterEvent.*
 import akka.cluster.typed.{Cluster, Subscribe}
 import com.typesafe.config.{Config, ConfigFactory}
-
 import scala.jdk.CollectionConverters.*
 
 /**
@@ -31,7 +30,7 @@ class AkkaCluster(private val config: Config):
      * Note that the cluster should be started before performing this operation.
      * @param behavior the specified actor
      * @param hostName the name of the specified host
-     * @param port the port of the specified host
+     * @param port     the port of the specified host
      * @tparam A the type of messages that can be handled by the specified actor
      */
     def join[A](behavior: Behavior[A], hostName: String = "127.0.0.1", port: Int = 0): Unit =

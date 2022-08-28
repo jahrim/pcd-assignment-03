@@ -5,15 +5,39 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="55825d0a-eb5d-488e-a6ac-f6809c2fcfff" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/ex-02/src/main/scala/util/Id.scala" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/libraries/sbt__org_openjfx_javafx_base_16_jar.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/libraries/sbt__org_openjfx_javafx_base_16_win_jar.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/libraries/sbt__org_openjfx_javafx_controls_16_jar.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/libraries/sbt__org_openjfx_javafx_controls_16_win_jar.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/libraries/sbt__org_openjfx_javafx_fxml_16_win_jar.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/libraries/sbt__org_openjfx_javafx_graphics_16_jar.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/libraries/sbt__org_openjfx_javafx_graphics_16_win_jar.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/libraries/sbt__org_openjfx_javafx_media_16_jar.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/libraries/sbt__org_openjfx_javafx_media_16_win_jar.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/libraries/sbt__org_openjfx_javafx_swing_16_win_jar.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/libraries/sbt__org_openjfx_javafx_web_16_win_jar.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/libraries/sbt__org_scalafx_scalafx_3_16_0_0_R24_jar.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ex-02/src/main/resources/main.fxml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ex-02/src/main/scala/Gui.scala" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ex-02/src/main/scala/view/MainFXController.scala" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ex-02/src/main/scala/view/View.scala" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/modules/assignment03-build.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/modules/assignment03-build.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/modules/assignment03.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/modules/assignment03.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/modules/exercise01.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/modules/exercise01.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/modules/exercise02.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/modules/exercise02.iml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build.sbt" beforeDir="false" afterPath="$PROJECT_DIR$/build.sbt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ex-02/src/main/scala/App.scala" beforeDir="false" afterPath="$PROJECT_DIR$/ex-02/src/main/scala/App.scala" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/ex-02/src/main/scala/actor/CityActor.scala" beforeDir="false" afterPath="$PROJECT_DIR$/ex-02/src/main/scala/actor/CityActor.scala" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/ex-02/src/main/scala/actor/FireStationActor.scala" beforeDir="false" afterPath="$PROJECT_DIR$/ex-02/src/main/scala/actor/FireStationActor.scala" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/ex-02/src/main/scala/actor/PluviometerActor.scala" beforeDir="false" afterPath="$PROJECT_DIR$/ex-02/src/main/scala/actor/PluviometerActor.scala" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/ex-02/src/main/scala/actor/ZoneActor.scala" beforeDir="false" afterPath="$PROJECT_DIR$/ex-02/src/main/scala/actor/ZoneActor.scala" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/ex-02/src/main/scala/cluster/AkkaCluster.scala" beforeDir="false" afterPath="$PROJECT_DIR$/ex-02/src/main/scala/cluster/AkkaCluster.scala" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/ex-02/src/main/scala/configuration/C.scala" beforeDir="false" afterPath="$PROJECT_DIR$/ex-02/src/main/scala/configuration/C.scala" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ex-02/src/main/scala/util/Id.scala" beforeDir="false" afterPath="$PROJECT_DIR$/ex-02/src/main/scala/util/Id.scala" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/ex-02/src/main/scala/util/Point2D.scala" beforeDir="false" afterPath="$PROJECT_DIR$/ex-02/src/main/scala/util/Point2D.scala" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ex-02/src/main/scala/util/StateIn.scala" beforeDir="false" afterPath="$PROJECT_DIR$/ex-02/src/main/scala/util/StateIn.scala" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ex-02/src/test/java/JUnitTemplateTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/ex-02/src/test/java/JUnitTemplateTest.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -38,6 +62,17 @@
                 <item name="" type="6a2764b6:ExternalProjectsStructure$RootNode" />
                 <item name="assignment03" type="f1a62948:ProjectNode" />
               </path>
+              <path>
+                <item name="" type="6a2764b6:ExternalProjectsStructure$RootNode" />
+                <item name="assignment03" type="f1a62948:ProjectNode" />
+                <item name="exercise02" type="2d1252cf:ModuleNode" />
+              </path>
+              <path>
+                <item name="" type="6a2764b6:ExternalProjectsStructure$RootNode" />
+                <item name="assignment03" type="f1a62948:ProjectNode" />
+                <item name="exercise02" type="2d1252cf:ModuleNode" />
+                <item name="Dependencies" type="6de06a37:ExternalSystemViewDefaultContributor$MyDependenciesNode" />
+              </path>
             </expand>
             <select />
           </tree_state>
@@ -49,6 +84,7 @@
     <option name="RECENT_TEMPLATES">
       <list>
         <option value="Scala Trait" />
+        <option value="Class" />
       </list>
     </option>
   </component>
@@ -77,25 +113,27 @@
   <component name="ProjectViewState">
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "RunOnceActivity.OpenProjectViewOnStart": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
-    "last_opened_file_path": "C:/Users/Public/Documents/Projects/pcd-03/ex-02/src/main/scala/util",
-    "project.structure.last.edited": "Modules",
-    "project.structure.proportion": "0.0",
-    "project.structure.side.proportion": "0.2",
-    "run.code.analysis.last.selected.profile": "pProject Default",
-    "scala_project_settings_configurable.last_selected_tab_index": "1",
-    "settings.editor.selected.configurable": "sbt.project.settings.configurable"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
+    &quot;last_directory_selection&quot;: &quot;C:/Users/Public/Documents/Projects/pcd-03/ex-02/src/main/scala&quot;,
+    &quot;last_opened_file_path&quot;: &quot;C:/Users/admin/Desktop/Programs/SceneBuilder.lnk&quot;,
+    &quot;project.structure.last.edited&quot;: &quot;Modules&quot;,
+    &quot;project.structure.proportion&quot;: &quot;0.0&quot;,
+    &quot;project.structure.side.proportion&quot;: &quot;0.2&quot;,
+    &quot;run.code.analysis.last.selected.profile&quot;: &quot;pProject Default&quot;,
+    &quot;scala_project_settings_configurable.last_selected_tab_index&quot;: &quot;1&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.JavaFX&quot;
   }
-}]]></component>
+}</component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
       <recent name="C:\Users\Public\Documents\Projects\pcd-03\ex-02\src\main\scala\util" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Users\Public\Documents\Projects\pcd-03\ex-02\src\main\resources" />
       <recent name="C:\Users\Public\Documents\Projects\pcd-03\ex-02\src\main\scala\mvc\domain" />
     </key>
     <key name="CopyClassDialog.RECENTS_KEY">
@@ -103,7 +141,14 @@
       <recent name="mvc" />
     </key>
   </component>
-  <component name="RunManager" selected="Application.main">
+  <component name="RunManager" selected="Application.Gui">
+    <configuration name="Gui" type="Application" factoryName="Application" temporary="true">
+      <option name="MAIN_CLASS_NAME" value="Gui" />
+      <module name="exercise02" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
     <configuration name="main" type="Application" factoryName="Application" temporary="true">
       <option name="MAIN_CLASS_NAME" value="main" />
       <module name="exercise02" />
@@ -114,19 +159,6 @@
     <configuration name="modelSetup" type="Application" factoryName="Application" temporary="true">
       <option name="MAIN_CLASS_NAME" value="modelSetup" />
       <module name="exercise02" />
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
-    <configuration name="mvc.actor.main" type="Application" factoryName="Application" temporary="true">
-      <option name="MAIN_CLASS_NAME" value="mvc.actor.main" />
-      <module name="exercise02" />
-      <extension name="coverage">
-        <pattern>
-          <option name="PATTERN" value="mvc.actor.*" />
-          <option name="ENABLED" value="true" />
-        </pattern>
-      </extension>
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
@@ -147,11 +179,11 @@
     </configuration>
     <recent_temporary>
       <list>
+        <item itemvalue="Application.Gui" />
         <item itemvalue="Application.main" />
         <item itemvalue="Application.tryRun" />
         <item itemvalue="Application.run" />
         <item itemvalue="Application.modelSetup" />
-        <item itemvalue="Application.mvc.actor.main" />
       </list>
     </recent_temporary>
   </component>

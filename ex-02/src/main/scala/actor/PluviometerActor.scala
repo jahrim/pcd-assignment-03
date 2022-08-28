@@ -2,20 +2,16 @@ package actor
 
 import actor.*
 import actor.CityActor.*
-import actor.FireStationActor.FireStation
 import actor.PluviometerActor.*
 import actor.ZoneActor.*
-import actor.ZoneActor.Zone
 import akka.actor.typed.receptionist.Receptionist.*
 import akka.actor.typed.receptionist.ServiceKey
 import akka.actor.typed.scaladsl.{Behaviors, Routers}
-import akka.actor.typed.{ActorRef, Behavior}
-import cluster.AkkaCluster
+import akka.actor.typed.Behavior
 import cluster.message.CborSerializable
 import configuration.C.City.*
-import configuration.C.Zone.MAX_PLUVIOMETERS_PER_ZONE
-import util.{Id, Point2D}
 import configuration.C.Log.*
+import util.{Id, Point2D}
 
 /**
  * Model the actor for a pluviometer.
@@ -32,7 +28,7 @@ object PluviometerActor:
 
   /**
    * @param pluviometer the initial state of this pluviometer actor
-   * @param cityId the identifier of the city this pluviometer belongs to
+   * @param cityId      the identifier of the city this pluviometer belongs to
    */
   def apply(pluviometer: Pluviometer, cityId: String): Behavior[Message] =
     Behaviors.setup { context =>
@@ -57,7 +53,7 @@ object PluviometerActor:
    * is greater than a certain threshold.
    * @param position  the position of this pluviometer
    * @param threshold the threshold of this pluviometer
-   * @param id the identifier of this pluviometer
+   * @param id        the identifier of this pluviometer
    */
   abstract class Pluviometer(val position: Point2D, val threshold: Double, val id: String = Id.newId) extends Id:
     protected var _lastMeasurement: Double = 0

@@ -2,21 +2,19 @@ package actor
 
 import actor.*
 import actor.CityActor.*
-import actor.FireStationActor.FireStation
-import actor.FireStationActor.FireStation.FireStationData
+import actor.FireStationActor.{FireStation, FireStationData}
 import actor.PluviometerActor.{Pluviometer, PluviometerData}
 import actor.ZoneActor.{Zone, ZoneData}
-import akka.actor.typed.{ActorRef, Behavior}
 import akka.actor.typed.receptionist.Receptionist.*
 import akka.actor.typed.receptionist.ServiceKey
 import akka.actor.typed.scaladsl.{Behaviors, Routers}
+import akka.actor.typed.{ActorRef, Behavior}
 import cluster.AkkaCluster
 import cluster.message.CborSerializable
 import configuration.C.City.*
-import configuration.C.Pluviometer.*
-import configuration.C.Zone.MAX_PLUVIOMETERS_PER_ZONE
 import configuration.C.Log.pretty
-import sun.tools.jconsole.ProxyClient.Snapshot
+import configuration.C.Pluviometer.*
+import configuration.C.Zone.{MAX_PLUVIOMETERS_PER_ZONE, RANDOM_POSITION_PADDING}
 import util.{Id, Point2D}
 
 import scala.util.Random
@@ -44,35 +42,35 @@ object CityActor:
   private[CityActor] case object TakeSnapshot extends Message
 
   /**
-   * @param cluster the cluster used by this city actor to deploy itself and his children
-   * @param city the initial state of this city actor
+   * @param cluster       the cluster used by this city actor to deploy itself and his children
+   * @param city          the initial state of this city actor
    * @param numberOfZones the number of zones this city should be partitioned into
    */
   def apply(cluster: AkkaCluster, city: City = City(), numberOfZones: Int = NUMBER_OF_ZONES): Unit =
-    val snapshot: Snapshot = Snapshot()
+    val snapshot: Snapshot = Snapshot(city.data)
     city.asZone.splitInto(numberOfZones) foreach { zone =>
       val pluviometers = List.fill(Random.nextInt(MAX_PLUVIOMETERS_PER_ZONE) + 1)(
-        Pluviometer.withRandomMeasurements(zone.randomPosition, PLUVIOMETER_SIGNAL_PROBABILITY)
+        Pluviometer.withRandomMeasurements(zone.randomPosition(RANDOM_POSITION_PADDING), PLUVIOMETER_SIGNAL_PROBABILITY)
       )
       val fireStations = List.fill(1)(FireStation.random(zone))
       pluviometers foreach { p =>
-        snapshot.pluviometers = snapshot.pluviometers + (p.id -> p.data)
+        snapshot.pluviometerDatas = snapshot.pluviometerDatas + (p.id -> p.data)
         cluster.join(PluviometerActor(p, city.id))
       }
       fireStations foreach { f =>
-        snapshot.fireStations = snapshot.fireStations + (f.id -> f.data)
+        snapshot.fireStationDatas = snapshot.fireStationDatas + (f.id -> f.data)
         cluster.join(FireStationActor(f, city.id))
       }
-      snapshot.zones = snapshot.zones + (zone.id -> zone.data)
+      snapshot.zoneDatas = snapshot.zoneDatas + (zone.id -> zone.data)
       cluster.join(ZoneActor(zone, city.id, pluviometers.map(_.id), fireStations.map(_.id)))
     }
     cluster.join(
       Behaviors.setup[Message] { context =>
         context.system.receptionist ! Register(ServiceKey[Message](city.id), context.self)
         val children: CityChildren = CityChildren()
-        children.pluviometers = snapshot.pluviometers.keys.map(p => context.spawnAnonymous(Routers.group(ServiceKey[PluviometerActor.Message](p)))).toList
-        children.fireStations = snapshot.fireStations.keys.map(f => context.spawnAnonymous(Routers.group(ServiceKey[FireStationActor.Message](f)))).toList
-        children.zones = snapshot.zones.keys.map(z => context.spawnAnonymous(Routers.group(ServiceKey[ZoneActor.Message](z)))).toList
+        children.pluviometers = snapshot.pluviometerDatas.keys.map(p => context.spawnAnonymous(Routers.group(ServiceKey[PluviometerActor.Message](p)))).toList
+        children.fireStations = snapshot.fireStationDatas.keys.map(f => context.spawnAnonymous(Routers.group(ServiceKey[FireStationActor.Message](f)))).toList
+        children.zones = snapshot.zoneDatas.keys.map(z => context.spawnAnonymous(Routers.group(ServiceKey[ZoneActor.Message](z)))).toList
         Active(city, children, snapshot)
       }
     )
@@ -84,19 +82,19 @@ object CityActor:
         timers.startTimerWithFixedDelay(TakeSnapshot, TakeSnapshot, SNAPSHOT_PERIOD)
         Behaviors.receiveMessage {
           case TakeSnapshot =>
-            //todo send snapshot to view
+            println("###"); snapshot.foreach(println) //todo send snapshot to view
             children.pluviometers.foreach(_ ! PluviometerActor.TakeSnapshot)
             children.fireStations.foreach(_ ! FireStationActor.TakeSnapshot)
             children.zones.foreach(_ ! ZoneActor.TakeSnapshot)
             Behaviors.same
           case NotifyPluviometerState(state) =>
-            snapshot.pluviometers = snapshot.pluviometers + (state.id -> state)
+            snapshot.pluviometerDatas = snapshot.pluviometerDatas + (state.id -> state)
             Active(city, children, snapshot)
           case NotifyFireStationState(state) =>
-            snapshot.fireStations = snapshot.fireStations + (state.id -> state)
+            snapshot.fireStationDatas = snapshot.fireStationDatas + (state.id -> state)
             Active(city, children, snapshot)
           case NotifyZoneState(state) =>
-            snapshot.zones = snapshot.zones + (state.id -> state)
+            snapshot.zoneDatas = snapshot.zoneDatas + (state.id -> state)
             Active(city, children, snapshot)
         }
       }
@@ -130,15 +128,53 @@ object CityActor:
   /**
    * Model a snapshot of all the entities inside a city with their state.
    *
-   * @param pluviometers a map from the pluviometers to their state
-   * @param fireStations a map from the fire-stations to their state
-   * @param zones        a map from the zones to their state
+   * @param pluviometerDatas a map from the pluviometers to their state
+   * @param fireStationDatas a map from the fire-stations to their state
+   * @param zoneDatas        a map from the zones to their state
    */
   case class Snapshot(
-    var pluviometers: Map[String, PluviometerData] = Map(),
-    var fireStations: Map[String, FireStationData] = Map(),
-    var zones: Map[String, ZoneData] = Map()
-  ) extends CborSerializable
+     var cityData: CityData,
+     var pluviometerDatas: Map[String, PluviometerData] = Map(),
+     var fireStationDatas: Map[String, FireStationData] = Map(),
+     var zoneDatas: Map[String, ZoneData] = Map()
+  ) extends CborSerializable:
+    /**
+     * Consumes the city, the zones, the pluviometers and the fire-stations of this snapshot with the specified consumer.
+     * @param consumer the specified consumer
+     */
+    def foreach(consumer: CityData | PluviometerData | FireStationData | ZoneData => Unit): Unit =
+      consumer(cityData)
+      zoneDatas.values.foreach(consumer)
+      pluviometerDatas.values.foreach(consumer)
+      fireStationDatas.values.foreach(consumer)
+  /**
+   * Companion object of [[Snapshot]].
+   */
+  object Snapshot:
+    /** @return a random snapshot. Useful for debugging. */
+    def random: Snapshot =
+      val snapshot: Snapshot = Snapshot(City().data)
+      snapshot.zoneDatas = Map.from(snapshot.cityData.city.asZone.splitInto(NUMBER_OF_ZONES).map(z => {
+        z.become(Zone.State.random)
+        (z.id, z.data)
+      }))
+      snapshot.fireStationDatas = Map.from(snapshot.zoneDatas.values.map(z =>
+        FireStation(z.asZone.randomPosition(RANDOM_POSITION_PADDING))).map(f => {
+        f.become(FireStation.State.random)
+        (f.id, f.data)
+      })
+      )
+      snapshot.pluviometerDatas = Map.from(
+        snapshot.zoneDatas.values.flatMap(z =>
+          (0 until Random.nextInt(MAX_PLUVIOMETERS_PER_ZONE) + 1).map(_ =>
+            Pluviometer.withRandomMeasurements(z.asZone.randomPosition(RANDOM_POSITION_PADDING), 0.1)
+          )
+        ).map(p => {
+          p.measure()
+          (p.id, p.data)
+        })
+      )
+      snapshot
 
   /**
    * Model a collection of the actors known by a city.

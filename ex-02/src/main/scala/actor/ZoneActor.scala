@@ -4,17 +4,16 @@ import actor.CityActor.*
 import actor.FireStationActor.*
 import actor.PluviometerActor.*
 import actor.ZoneActor.*
-import actor.ZoneActor.Zone.{SplitDirection, State}
 import actor.ZoneActor.Zone.State.*
+import actor.ZoneActor.Zone.{SplitDirection, State}
 import akka.actor.typed.receptionist.Receptionist.*
 import akka.actor.typed.receptionist.ServiceKey
 import akka.actor.typed.scaladsl.{Behaviors, Routers}
-import akka.actor.typed.{ActorRef, Behavior}
+import akka.actor.typed.Behavior
 import cluster.message.CborSerializable
-import configuration.C.Zone.{ALERT_PERIOD, MEASUREMENT_PERIOD}
 import configuration.C.Log.pretty
+import configuration.C.Zone.{ALERT_PERIOD, DEFAULT_SPLIT_POINT_PADDING, MEASUREMENT_PERIOD}
 import util.{Id, Point2D, StateIn}
-
 import scala.util.Random
 
 /**
@@ -39,8 +38,8 @@ object ZoneActor:
   private[ZoneActor] case object AlertFirestations extends Message
 
   /**
-   * @param zone the initial state of this zone
-   * @param cityId the identifier of the city this zone belongs to
+   * @param zone           the initial state of this zone
+   * @param cityId         the identifier of the city this zone belongs to
    * @param pluviometerIds the identifiers of the pluviometers in this zone
    * @param fireStationIds the identifiers of the fire-stations in this zone
    */
@@ -100,11 +99,11 @@ object ZoneActor:
           case AlertFirestations =>
             children.fireStations.foreach(_ ! Alert(context.self))
             Behaviors.same
-          case DepartureRequest(firestation) =>
-            firestation ! Depart(context.self)
+          case DepartureRequest(fireStation) =>
+            fireStation ! Depart(context.self)
             Behaviors.withTimers{ timers =>
               timers.cancel(AlertFirestations)
-              MonitoredBehavior(zone, city, signals, children, monitoredBy = firestation)
+              MonitoredBehavior(zone, city, signals, children, monitoredBy = fireStation)
             }
           case _ => Behaviors.unhandled
         }
@@ -133,36 +132,44 @@ object ZoneActor:
   /**
    * Model the state of a zone actor.
    * @param position the position of the zone
-   * @param width the width of the zone
-   * @param height the height of the zone
-   * @param id the identifier of the zone
+   * @param width    the width of the zone
+   * @param height   the height of the zone
+   * @param id       the identifier of the zone
    */
   case class Zone(position: Point2D, width: Double, height: Double, id: String = Id.newId) extends StateIn[State](Calm) with Id:
     /**
      * Divides this zone area in the specified number of sub-zones, randomly created.
-     *
      * @param numberOfSubZones the specified number of sub-zones
      * @return a list of the zone areas of the newly created sub-zones
      */
-    def splitInto(numberOfSubZones: Int): List[Zone] =
+    def splitInto(numberOfSubZones: Int, percentagePadding: Double = DEFAULT_SPLIT_POINT_PADDING): List[Zone] =
       def splitIntoDirectional(zone: Zone, subZones: Int, direction: SplitDirection): List[Zone] =
-        val splitPoint: Point2D = zone.randomPosition
-        val surplus: (Int, Int) = if subZones % 2 == 0 then (0, 0) else Seq((0, 1), (1, 0))(Random.nextInt(2))
-        if subZones > 1 then direction match
-          case SplitDirection.HORIZONTAL =>
-            val top: Zone = Zone(zone.position, zone.width, zone.height - splitPoint.y)
-            val bottom: Zone = Zone(zone.position.relocateY(splitPoint.y), zone.width, splitPoint.y)
-            splitIntoDirectional(top, subZones / 2 + surplus._1, SplitDirection.VERTICAL)
+        if subZones > 1 then
+          val surplus: (Int, Int) = if subZones % 2 == 0 then (0, 0) else Seq((0, 1), (1, 0))(Random.nextInt(2))
+          val splitPoint: Point2D = zone.randomPosition(percentagePadding)
+          direction match
+            case SplitDirection.HORIZONTAL =>
+              val top: Zone = Zone(zone.position, zone.width, zone.position.y - splitPoint.y)
+              val bottom: Zone = Zone(zone.position.relocateY(splitPoint.y), zone.width, zone.height - zone.position.y + splitPoint.y)
+              splitIntoDirectional(top, subZones / 2 + surplus._1, SplitDirection.VERTICAL)
               :::
               splitIntoDirectional(bottom, subZones / 2 + surplus._2, SplitDirection.VERTICAL)
-          case SplitDirection.VERTICAL =>
-            val left: Zone = Zone(zone.position, splitPoint.x, zone.height)
-            val right: Zone = Zone(zone.position.relocateX(splitPoint.x), zone.width - splitPoint.x, zone.height)
-            splitIntoDirectional(left, subZones / 2 + surplus._1, SplitDirection.HORIZONTAL)
+            case SplitDirection.VERTICAL =>
+              val left: Zone = Zone(zone.position, splitPoint.x - zone.position.x, zone.height)
+              val right: Zone = Zone(zone.position.relocateX(splitPoint.x), zone.width - splitPoint.x + zone.position.x, zone.height)
+              splitIntoDirectional(left, subZones / 2 + surplus._1, SplitDirection.HORIZONTAL)
               :::
               splitIntoDirectional(right, subZones / 2 + surplus._2, SplitDirection.HORIZONTAL)
         else List(zone)
       splitIntoDirectional(this, numberOfSubZones, Seq(SplitDirection.HORIZONTAL, SplitDirection.VERTICAL)(Random.nextInt(2)))
+
+    /**
+     * @param percentagePadding the specified padding
+     * @return a random point inside a zone area obtained by applying the specified padding to this zone area.
+     */
+    def randomPosition(percentagePadding: Double): Point2D =
+      val (paddingX: Double, paddingY: Double) = (percentagePadding * this.width, percentagePadding * this.height)
+      Zone(this.position.translate(paddingX, -paddingY), this.width - 2 * paddingX, this.height - 2 * paddingY).randomPosition
     /** @return a random point inside this zone area. */
     def randomPosition: Point2D = (this.position.x + Math.random() * this.width, this.position.y - Math.random() * this.height)
     /**
@@ -182,7 +189,6 @@ object ZoneActor:
    */
   object Zone:
     private[Zone] enum SplitDirection { case HORIZONTAL, VERTICAL }
-
     /**
      * Model the state of a zone.
      */
@@ -193,13 +199,19 @@ object ZoneActor:
       case Alarmed
       /** State where this zone is under alarm but a fire-station is taking care of it. */
       case Monitored
+    /**
+     * Companion object of [[State]]
+     */
+    object State:
+      /** @return a random zone state. */
+      def random: State = State.fromOrdinal(Random.nextInt(State.values.length))
 
   /**
    * Model the data representing a zone.
    */
   case class ZoneData(position: Point2D, width: Double, height: Double, id: String = Id.newId, state: Int) extends CborSerializable:
     /** @return the zone represented by this data. */
-    def zone: Zone =
+    def asZone: Zone =
       val zone = Zone(position, width, height, id)
       zone.become(State.fromOrdinal(state))
       zone

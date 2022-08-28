@@ -53,6 +53,17 @@
     <orderEntry type="library" scope="TEST" name="sbt: org.hamcrest:hamcrest-core:1.3:jar" level="project" />
     <orderEntry type="library" name="sbt: org.lmdbjava:lmdbjava:0.7.0:jar" level="project" />
     <orderEntry type="library" name="sbt: org.lz4:lz4-java:1.8.0:jar" level="project" />
+    <orderEntry type="library" name="sbt: org.openjfx:javafx-base:16:jar" level="project" />
+    <orderEntry type="library" name="sbt: org.openjfx:javafx-base:16:win:jar" level="project" />
+    <orderEntry type="library" name="sbt: org.openjfx:javafx-controls:16:jar" level="project" />
+    <orderEntry type="library" name="sbt: org.openjfx:javafx-controls:16:win:jar" level="project" />
+    <orderEntry type="library" name="sbt: org.openjfx:javafx-fxml:16:win:jar" level="project" />
+    <orderEntry type="library" name="sbt: org.openjfx:javafx-graphics:16:jar" level="project" />
+    <orderEntry type="library" name="sbt: org.openjfx:javafx-graphics:16:win:jar" level="project" />
+    <orderEntry type="library" name="sbt: org.openjfx:javafx-media:16:jar" level="project" />
+    <orderEntry type="library" name="sbt: org.openjfx:javafx-media:16:win:jar" level="project" />
+    <orderEntry type="library" name="sbt: org.openjfx:javafx-swing:16:win:jar" level="project" />
+    <orderEntry type="library" name="sbt: org.openjfx:javafx-web:16:win:jar" level="project" />
     <orderEntry type="library" name="sbt: org.ow2.asm:asm-analysis:5.0.3:jar" level="project" />
     <orderEntry type="library" name="sbt: org.ow2.asm:asm-commons:5.0.3:jar" level="project" />
     <orderEntry type="library" name="sbt: org.ow2.asm:asm-tree:5.0.3:jar" level="project" />
@@ -65,6 +76,7 @@
     <orderEntry type="library" name="sbt: org.scala-lang:scala-library:2.13.6:jar" level="project" />
     <orderEntry type="library" name="sbt: org.scala-lang:scala3-library_3:3.1.1:jar" level="project" />
     <orderEntry type="library" scope="TEST" name="sbt: org.scalactic:scalactic_3:3.2.12:jar" level="project" />
+    <orderEntry type="library" name="sbt: org.scalafx:scalafx_3:16.0.0-R24:jar" level="project" />
     <orderEntry type="library" scope="TEST" name="sbt: org.scalatest:scalatest-compatible:3.2.12:jar" level="project" />
     <orderEntry type="library" scope="TEST" name="sbt: org.scalatest:scalatest-core_3:3.2.12:jar" level="project" />
     <orderEntry type="library" scope="TEST" name="sbt: org.scalatest:scalatest-diagrams_3:3.2.12:jar" level="project" />
@@ -81,5 +93,20 @@
     <orderEntry type="library" scope="TEST" name="sbt: org.scalatest:scalatest-wordspec_3:3.2.12:jar" level="project" />
     <orderEntry type="library" scope="TEST" name="sbt: org.scalatest:scalatest_3:3.2.12:jar" level="project" />
     <orderEntry type="library" name="sbt: org.slf4j:slf4j-api:1.7.36:jar" level="project" />
+    <orderEntry type="module-library">
+      <library name="sbt: unmanaged-sources-and-docs">
+        <CLASSES />
+        <JAVADOC>
+          <root url="jar://$USER_HOME$/AppData/Local/Coursier/cache/v1/https/repo1.maven.org/maven2/org/openjfx/javafx-fxml/16/javafx-fxml-16-javadoc.jar!/" />
+          <root url="jar://$USER_HOME$/AppData/Local/Coursier/cache/v1/https/repo1.maven.org/maven2/org/openjfx/javafx-swing/16/javafx-swing-16-javadoc.jar!/" />
+          <root url="jar://$USER_HOME$/AppData/Local/Coursier/cache/v1/https/repo1.maven.org/maven2/org/openjfx/javafx-web/16/javafx-web-16-javadoc.jar!/" />
+        </JAVADOC>
+        <SOURCES>
+          <root url="jar://$USER_HOME$/AppData/Local/Coursier/cache/v1/https/repo1.maven.org/maven2/org/openjfx/javafx-fxml/16/javafx-fxml-16-sources.jar!/" />
+          <root url="jar://$USER_HOME$/AppData/Local/Coursier/cache/v1/https/repo1.maven.org/maven2/org/openjfx/javafx-swing/16/javafx-swing-16-sources.jar!/" />
+          <root url="jar://$USER_HOME$/AppData/Local/Coursier/cache/v1/https/repo1.maven.org/maven2/org/openjfx/javafx-web/16/javafx-web-16-sources.jar!/" />
+        </SOURCES>
+      </library>
+    </orderEntry>
   </component>
 </module>

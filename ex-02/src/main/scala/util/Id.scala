@@ -6,6 +6,7 @@ import scala.util.Random
  * Model an entity with an identifier.
  */
 trait Id:
+  /** @return the identifier of this entity. */
   def id: String
 
 /**

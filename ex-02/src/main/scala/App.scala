@@ -1,11 +1,7 @@
-import _root_.cluster.AkkaCluster
-import akka.actor.ProviderSelection.cluster
+import cluster.AkkaCluster
+import actor.CityActor
 import akka.actor.typed.scaladsl.Behaviors
 import com.typesafe.config.ConfigFactory
-import configuration.C
-import actor.CityActor
-import util.Point2D
-import scala.util.Random
 
 /**
  * The main application.

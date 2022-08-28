@@ -11,7 +11,6 @@ trait StateIn[S](private var currentState: S):
 
   /**
    * Sets the state of this entity to the specified value
-   *
    * @param s the specified value
    */
   def become(s: S): Unit = this.currentState = s
