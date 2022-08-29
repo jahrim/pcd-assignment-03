@@ -15,8 +15,7 @@ object App:
     /** Starts the cluster of this application. */
     @main def startCluster(): Unit =
         val cluster: AkkaCluster = AkkaCluster(ConfigFactory.load("cluster")).start();
-
-    /** Creates a new node in the cluster of this application. */
+    /** Creates a new city in the cluster of this application. */
     @main def joinCluster(): Unit =
         val cluster: AkkaCluster = AkkaCluster(ConfigFactory.load("cluster"))
-        cluster.join(Behaviors.empty)
+        CityActor(cluster)

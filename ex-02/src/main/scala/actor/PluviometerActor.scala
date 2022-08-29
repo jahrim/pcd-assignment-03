@@ -101,4 +101,4 @@ object PluviometerActor:
     threshold: Double,
     signal: Boolean,
     id: String = Id.newId
-  ) extends CborSerializable
+  ) extends CborSerializable with Id

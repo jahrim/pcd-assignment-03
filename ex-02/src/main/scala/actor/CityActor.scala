@@ -4,6 +4,7 @@ import actor.*
 import actor.CityActor.*
 import actor.FireStationActor.{FireStation, FireStationData}
 import actor.PluviometerActor.{Pluviometer, PluviometerData}
+import actor.ViewActor.ReceiveSnapshot
 import actor.ZoneActor.{Zone, ZoneData}
 import akka.actor.typed.receptionist.Receptionist.*
 import akka.actor.typed.receptionist.ServiceKey
@@ -24,6 +25,7 @@ import scala.util.Random
  */
 object CityActor:
   type CityRef = ActorRef[Message]
+  type ViewRef = ActorRef[ViewActor.Message]
   type ZoneRef = ActorRef[ZoneActor.Message]
   type PluviometerRef = ActorRef[PluviometerActor.Message]
   type FireStationRef = ActorRef[FireStationActor.Message]
@@ -38,6 +40,8 @@ object CityActor:
   case class NotifyFireStationState(state: FireStationData) extends Message
   /** Tells this city actor to update the state of the specified zone. */
   case class NotifyZoneState(state: ZoneData) extends Message
+  /** Tells this city actor to register the specified view actor, in order to notify him of snapshot updates. */
+  case class RegisterView(viewId: String) extends Message
   /** Tells this city actor to take a snapshot of the system. */
   private[CityActor] case object TakeSnapshot extends Message
 
@@ -68,9 +72,10 @@ object CityActor:
       Behaviors.setup[Message] { context =>
         context.system.receptionist ! Register(ServiceKey[Message](city.id), context.self)
         val children: CityChildren = CityChildren()
-        children.pluviometers = snapshot.pluviometerDatas.keys.map(p => context.spawnAnonymous(Routers.group(ServiceKey[PluviometerActor.Message](p)))).toList
-        children.fireStations = snapshot.fireStationDatas.keys.map(f => context.spawnAnonymous(Routers.group(ServiceKey[FireStationActor.Message](f)))).toList
-        children.zones = snapshot.zoneDatas.keys.map(z => context.spawnAnonymous(Routers.group(ServiceKey[ZoneActor.Message](z)))).toList
+        children.pluviometers = Map.from(snapshot.pluviometerDatas.keys.map(p => (p, context.spawnAnonymous(Routers.group(ServiceKey[PluviometerActor.Message](p))))))
+        children.fireStations = Map.from(snapshot.fireStationDatas.keys.map(f => (f, context.spawnAnonymous(Routers.group(ServiceKey[FireStationActor.Message](f))))))
+        children.zones = Map.from(snapshot.zoneDatas.keys.map(z => (z, context.spawnAnonymous(Routers.group(ServiceKey[ZoneActor.Message](z))))))
+        snapshot.toList.foreach(println)
         Active(city, children, snapshot)
       }
     )
@@ -78,24 +83,34 @@ object CityActor:
   /** Behavior where the city takes a snapshot of itself periodically, notifying the view in the process. */
   private[CityActor] object Active:
     def apply(city: City, children: CityChildren, snapshot: Snapshot): Behavior[Message] =
-      Behaviors.withTimers { timers =>
-        timers.startTimerWithFixedDelay(TakeSnapshot, TakeSnapshot, SNAPSHOT_PERIOD)
-        Behaviors.receiveMessage {
-          case TakeSnapshot =>
-            println("###"); snapshot.foreach(println) //todo send snapshot to view
-            children.pluviometers.foreach(_ ! PluviometerActor.TakeSnapshot)
-            children.fireStations.foreach(_ ! FireStationActor.TakeSnapshot)
-            children.zones.foreach(_ ! ZoneActor.TakeSnapshot)
-            Behaviors.same
-          case NotifyPluviometerState(state) =>
-            snapshot.pluviometerDatas = snapshot.pluviometerDatas + (state.id -> state)
-            Active(city, children, snapshot)
-          case NotifyFireStationState(state) =>
-            snapshot.fireStationDatas = snapshot.fireStationDatas + (state.id -> state)
-            Active(city, children, snapshot)
-          case NotifyZoneState(state) =>
-            snapshot.zoneDatas = snapshot.zoneDatas + (state.id -> state)
-            Active(city, children, snapshot)
+      Behaviors.setup { context =>
+        Behaviors.withTimers { timers =>
+          timers.startTimerWithFixedDelay(TakeSnapshot, TakeSnapshot, SNAPSHOT_PERIOD)
+          Behaviors.receiveMessage {
+            case TakeSnapshot =>
+              println(snapshot.cityData)
+              children.pluviometers.values.foreach(_ ! PluviometerActor.TakeSnapshot)
+              children.fireStations.values.foreach(_ ! FireStationActor.TakeSnapshot)
+              children.zones.values.foreach(_ ! ZoneActor.TakeSnapshot)
+              Behaviors.same
+            case NotifyPluviometerState(state) =>
+              children.views.values.foreach(_ ! ViewActor.ReceiveSnapshot(snapshot))
+              snapshot.pluviometerDatas = snapshot.pluviometerDatas + (state.id -> state)
+              Active(city, children, snapshot)
+            case NotifyFireStationState(state) =>
+              children.views.values.foreach(_ ! ViewActor.ReceiveSnapshot(snapshot))
+              snapshot.fireStationDatas = snapshot.fireStationDatas + (state.id -> state)
+              Active(city, children, snapshot)
+            case NotifyZoneState(state) =>
+              children.views.values.foreach(_ ! ViewActor.ReceiveSnapshot(snapshot))
+              snapshot.zoneDatas = snapshot.zoneDatas + (state.id -> state)
+              Active(city, children, snapshot)
+            case RegisterView(viewId) =>
+              val view: ViewRef = context.spawnAnonymous(Routers.group(ServiceKey[ViewActor.Message](viewId)))
+              children.views = children.views + (viewId -> view)
+              view ! ViewActor.Registered
+              Active(city, children, snapshot)
+          }
         }
       }
 
@@ -121,7 +136,7 @@ object CityActor:
   /**
    * Model the data representing a city.
    */
-  case class CityData(position: Point2D, width: Double, height: Double, id: String) extends CborSerializable:
+  case class CityData(position: Point2D, width: Double, height: Double, id: String) extends CborSerializable with Id:
     /** @return the city represented by this data. */
     def city: City = City(position, width, height, id)
 
@@ -138,15 +153,21 @@ object CityActor:
      var fireStationDatas: Map[String, FireStationData] = Map(),
      var zoneDatas: Map[String, ZoneData] = Map()
   ) extends CborSerializable:
+    /** @return a list of the entities of this snapshot. */
+    def toList: List[Id] =
+      List[Id](cityData) ::: zoneDatas.values.toList ::: pluviometerDatas.values.toList ::: fireStationDatas.values.toList
     /**
-     * Consumes the city, the zones, the pluviometers and the fire-stations of this snapshot with the specified consumer.
-     * @param consumer the specified consumer
+     * @param entity the specified entity
+     * @return an optional of the entity of this snapshot with the id of the specified entity
      */
-    def foreach(consumer: CityData | PluviometerData | FireStationData | ZoneData => Unit): Unit =
-      consumer(cityData)
-      zoneDatas.values.foreach(consumer)
-      pluviometerDatas.values.foreach(consumer)
-      fireStationDatas.values.foreach(consumer)
+    def searchById(entity: Id): Option[Id] = searchById(entity.id)
+
+    /**
+     * @param id the specified id
+     * @return an optional of the entity of this snapshot with the specified id
+     */
+    def searchById(id: String): Option[Id] = this.toList.find(_.id == id)
+
   /**
    * Companion object of [[Snapshot]].
    */
@@ -179,12 +200,14 @@ object CityActor:
   /**
    * Model a collection of the actors known by a city.
    *
-   * @param pluviometers a list of the pluviometer actors known by the city
-   * @param fireStations a list of the fire-station actors known by the city
-   * @param zones        a list of the zone actors known by the city
+   * @param views        a map from the identifiers to the view actors known by the city
+   * @param pluviometers a map from the identifiers to the pluviometer actors known by the city
+   * @param fireStations a map from the identifiers to the fire-station actors known by the city
+   * @param zones        a map from the identifiers to the zone actors known by the city
    */
   case class CityChildren(
-    var pluviometers: List[PluviometerRef] = List(),
-    var fireStations: List[FireStationRef] = List(),
-    var zones: List[ZoneRef] = List()
+    var views: Map[String, ViewRef] = Map(),
+    var pluviometers: Map[String, PluviometerRef] = Map(),
+    var fireStations: Map[String, FireStationRef] = Map(),
+    var zones: Map[String, ZoneRef] = Map()
   )

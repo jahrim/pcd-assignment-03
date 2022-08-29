@@ -18,11 +18,6 @@ object Gui extends JFXApp3:
     if (resource == null) { throw new IOException(s"Cannot load resource: $mainResource") }
     val loader = new jfxf.FXMLLoader(resource)
     val root: jfxs.Parent = loader.load[jfxs.Parent]
-    val controller = loader.getController[MainFXController]
-
-    //todo remove (start)
-    controller.display(Snapshot.random)
-    //todo remove (end)
 
     stage = new PrimaryStage() {
       title = "FXML GridPane Demo"

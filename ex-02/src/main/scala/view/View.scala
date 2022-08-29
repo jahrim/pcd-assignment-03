@@ -10,7 +10,7 @@ import configuration.C.Log.pretty
 import configuration.C.View.*
 import javafx.scene.canvas.Canvas
 import javafx.scene.paint.Color
-import util.Point2D
+import util.{Id, Point2D}
 import view.View.*
 
 /**
@@ -71,7 +71,7 @@ object View:
    * Model an entity with a shape that can be drawn.
    * @tparam S the type of shape of this entity
    */
-  trait Drawable[S <: Shape]:
+  trait Drawable[S <: Shape] extends Id:
     /** @return the shape of this entity. */
     def shape: S
     /** @return the color of the border of the shape of this entity. */
@@ -109,13 +109,7 @@ object View:
     override def borderColor: Color = Colors.ENTITY_BORDER
     override def color: Color = Colors.PLUVIOMETER
     override def toString: String =
-      s"""Pluviometer:
-          |  id: ${p.id}
-          |  position: ${p.position}
-          |  signal: ${p.signal}
-          |  measurement: ${p.lastMeasurement.pretty}
-          |  threshold: ${p.threshold.pretty}
-       """.stripMargin
+      s"Pluviometer:\n  id: ${p.id}\n  position: ${p.position}\n  signal: ${p.signal},\n  measurement: ${p.lastMeasurement.pretty},\n  threshold: ${p.threshold.pretty}"
 
   /**
    * Model a view representing the data of a fire-station.
@@ -130,11 +124,7 @@ object View:
       case State.Available => Colors.FIRESTATION_AVAILABLE
       case State.Busy => Colors.FIRESTATION_BUSY
     override def toString: String =
-      s"""FireStation:
-          |  id: ${f.id}
-          |  position: ${f.position}
-          |  state: ${State.fromOrdinal(f.state)}
-       """.stripMargin
+      s"FireStation:\n  id: ${f.id},\n  position: ${f.position},\n  state: ${State.fromOrdinal(f.state)}"
 
   /**
    * Model a view representing the data of a zone.
@@ -150,13 +140,7 @@ object View:
       case State.Alarmed => Colors.ZONE_ALARMED
       case State.Monitored => Colors.ZONE_MONITORED
     override def toString: String =
-      s"""Zone:
-          |  id: ${z.id}
-          |  position: ${z.position}
-          |  width: ${z.width.pretty}
-          |  height: ${z.height.pretty}
-          |  state: ${State.fromOrdinal(z.state)}
-       """.stripMargin
+      s"Zone:\n  id: ${z.id}\n  position: ${z.position}\n  width: ${z.width.pretty}\n  height: ${z.height.pretty}\n  state: ${State.fromOrdinal(z.state)}"
 
   /**
    * Model the view representing the data of a snapshot of the system.
@@ -176,25 +160,20 @@ object View:
     val zoneViews: Map[String, ZoneView] = snapshot.zoneDatas.transform((_,z) =>
       ZoneView(z, mapToView(canvas)(snapshot.cityData)(Rectangle(z.position, z.width, z.height)))
     )
+
+    /** @return a list of the entities of this snapshot. */
+    def toList: List[Drawable[_]] =
+      List[Drawable[_]](cityView) ::: zoneViews.values.toList ::: pluviometerViews.values.toList ::: fireStationViews.values.toList
     /**
-     * Consumes the city, the zones, the pluviometers and the fire-stations of this snapshot with the specified consumer.
-     * @param consumer the specified consumer
+     * @param entity the specified entity
+     * @return an optional of the entity of this snapshot with the id of the specified entity
      */
-    def foreach(consumer: Drawable[_] => Unit): Unit =
-      consumer(cityView)
-      zoneViews.values.foreach(consumer)
-      pluviometerViews.values.foreach(consumer)
-      fireStationViews.values.foreach(consumer)
+    def searchById(entity: Id): Option[Drawable[_]] = searchById(entity.id)
     /**
-     * Consumes the city, the zones, the pluviometers and the fire-stations of this snapshot with the specified consumer.
-     * @param consumer the specified consumer
+     * @param id the specified id
+     * @return an optional of the entity of this snapshot with the specified id
      */
-    def searchById(entity: Drawable[_]): Option[Drawable[_]] = entity match
-      case city: City => if (city.id == cityView.id) then Option(cityView) else Option.empty
-      case zone: Zone => zoneViews.get(zone.id)
-      case pluviometer: Pluviometer => pluviometerViews.get(pluviometer.id)
-      case fireStation: FireStation => fireStationViews.get(fireStation.id)
-      case _ => Option.empty
+    def searchById(id: String): Option[Drawable[_]] = this.toList.find(_.id == id)
 
   /**
    * Model a circle.

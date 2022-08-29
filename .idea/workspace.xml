@@ -5,39 +5,23 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="55825d0a-eb5d-488e-a6ac-f6809c2fcfff" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/sbt__org_openjfx_javafx_base_16_jar.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/sbt__org_openjfx_javafx_base_16_win_jar.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/sbt__org_openjfx_javafx_controls_16_jar.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/sbt__org_openjfx_javafx_controls_16_win_jar.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/sbt__org_openjfx_javafx_fxml_16_win_jar.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/sbt__org_openjfx_javafx_graphics_16_jar.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/sbt__org_openjfx_javafx_graphics_16_win_jar.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/sbt__org_openjfx_javafx_media_16_jar.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/sbt__org_openjfx_javafx_media_16_win_jar.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/sbt__org_openjfx_javafx_swing_16_win_jar.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/sbt__org_openjfx_javafx_web_16_win_jar.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/sbt__org_scalafx_scalafx_3_16_0_0_R24_jar.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ex-02/src/main/resources/main.fxml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ex-02/src/main/scala/Gui.scala" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ex-02/src/main/scala/view/MainFXController.scala" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ex-02/src/main/scala/view/View.scala" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ex-02/src/main/scala/actor/ViewActor.scala" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.bsp/sbt.json" beforeDir="false" afterPath="$PROJECT_DIR$/.bsp/sbt.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/modules/assignment03-build.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/modules/assignment03-build.iml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/modules/assignment03.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/modules/assignment03.iml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/modules/exercise01.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/modules/exercise01.iml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/modules/exercise02.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/modules/exercise02.iml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build.sbt" beforeDir="false" afterPath="$PROJECT_DIR$/build.sbt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ex-02/src/main/resources/main.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/ex-02/src/main/resources/main.fxml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/ex-02/src/main/scala/App.scala" beforeDir="false" afterPath="$PROJECT_DIR$/ex-02/src/main/scala/App.scala" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ex-02/src/main/scala/Gui.scala" beforeDir="false" afterPath="$PROJECT_DIR$/ex-02/src/main/scala/Gui.scala" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/ex-02/src/main/scala/actor/CityActor.scala" beforeDir="false" afterPath="$PROJECT_DIR$/ex-02/src/main/scala/actor/CityActor.scala" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/ex-02/src/main/scala/actor/FireStationActor.scala" beforeDir="false" afterPath="$PROJECT_DIR$/ex-02/src/main/scala/actor/FireStationActor.scala" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/ex-02/src/main/scala/actor/PluviometerActor.scala" beforeDir="false" afterPath="$PROJECT_DIR$/ex-02/src/main/scala/actor/PluviometerActor.scala" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/ex-02/src/main/scala/actor/ZoneActor.scala" beforeDir="false" afterPath="$PROJECT_DIR$/ex-02/src/main/scala/actor/ZoneActor.scala" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ex-02/src/main/scala/cluster/AkkaCluster.scala" beforeDir="false" afterPath="$PROJECT_DIR$/ex-02/src/main/scala/cluster/AkkaCluster.scala" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/ex-02/src/main/scala/configuration/C.scala" beforeDir="false" afterPath="$PROJECT_DIR$/ex-02/src/main/scala/configuration/C.scala" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ex-02/src/main/scala/util/Id.scala" beforeDir="false" afterPath="$PROJECT_DIR$/ex-02/src/main/scala/util/Id.scala" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ex-02/src/main/scala/util/Point2D.scala" beforeDir="false" afterPath="$PROJECT_DIR$/ex-02/src/main/scala/util/Point2D.scala" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ex-02/src/main/scala/util/StateIn.scala" beforeDir="false" afterPath="$PROJECT_DIR$/ex-02/src/main/scala/util/StateIn.scala" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ex-02/src/test/java/JUnitTemplateTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/ex-02/src/test/java/JUnitTemplateTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ex-02/src/main/scala/view/MainFXController.scala" beforeDir="false" afterPath="$PROJECT_DIR$/ex-02/src/main/scala/view/MainFXController.scala" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ex-02/src/main/scala/view/View.scala" beforeDir="false" afterPath="$PROJECT_DIR$/ex-02/src/main/scala/view/View.scala" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -149,6 +133,20 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
+    <configuration name="Run" type="Application" factoryName="Application" temporary="true">
+      <option name="MAIN_CLASS_NAME" value="Run" />
+      <module name="exercise02" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="joinCluster" type="Application" factoryName="Application" temporary="true">
+      <option name="MAIN_CLASS_NAME" value="joinCluster" />
+      <module name="exercise02" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
     <configuration name="main" type="Application" factoryName="Application" temporary="true">
       <option name="MAIN_CLASS_NAME" value="main" />
       <module name="exercise02" />
@@ -156,22 +154,8 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="modelSetup" type="Application" factoryName="Application" temporary="true">
-      <option name="MAIN_CLASS_NAME" value="modelSetup" />
-      <module name="exercise02" />
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
-    <configuration name="run" type="Application" factoryName="Application" temporary="true">
-      <option name="MAIN_CLASS_NAME" value="run" />
-      <module name="exercise02" />
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
-    <configuration name="tryRun" type="Application" factoryName="Application" temporary="true">
-      <option name="MAIN_CLASS_NAME" value="tryRun" />
+    <configuration name="main2" type="Application" factoryName="Application" temporary="true">
+      <option name="MAIN_CLASS_NAME" value="main2" />
       <module name="exercise02" />
       <method v="2">
         <option name="Make" enabled="true" />
@@ -181,9 +165,9 @@
       <list>
         <item itemvalue="Application.Gui" />
         <item itemvalue="Application.main" />
-        <item itemvalue="Application.tryRun" />
-        <item itemvalue="Application.run" />
-        <item itemvalue="Application.modelSetup" />
+        <item itemvalue="Application.Run" />
+        <item itemvalue="Application.joinCluster" />
+        <item itemvalue="Application.main2" />
       </list>
     </recent_temporary>
   </component>

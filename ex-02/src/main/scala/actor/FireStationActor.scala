@@ -122,7 +122,7 @@ object FireStationActor:
   /**
    * Model the data representing a fire-station.
    */
-  case class FireStationData(position: Point2D, id: String = Id.newId, state: Int) extends CborSerializable:
+  case class FireStationData(position: Point2D, id: String = Id.newId, state: Int) extends CborSerializable with Id:
     /** @return the fire-station represented by this data. */
     def asFireStation: FireStation =
       val fireStation = FireStation(position, id)

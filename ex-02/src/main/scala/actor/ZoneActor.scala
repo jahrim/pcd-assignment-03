@@ -209,7 +209,7 @@ object ZoneActor:
   /**
    * Model the data representing a zone.
    */
-  case class ZoneData(position: Point2D, width: Double, height: Double, id: String = Id.newId, state: Int) extends CborSerializable:
+  case class ZoneData(position: Point2D, width: Double, height: Double, id: String = Id.newId, state: Int) extends CborSerializable with Id:
     /** @return the zone represented by this data. */
     def asZone: Zone =
       val zone = Zone(position, width, height, id)

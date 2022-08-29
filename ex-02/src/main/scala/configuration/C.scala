@@ -82,6 +82,10 @@ object C:
             val ZONE_ALARMED: Color = Color.RED.deriveColor(0, 1, 1, 0.2)
             /** The color of the zones in the city, when they are monitored. */
             val ZONE_MONITORED: Color = Color.ORANGE.deriveColor(0, 1, 1, 0.2)
+        /** How much a view actor waits before stopping retrying to register himself to his city. */
+        val CONNECTION_TIMEOUT: FiniteDuration = 30.second
+        /** How much a view actor waits before retrying to register himself to his city. */
+        val RECONNECTION_PERIOD: FiniteDuration = 2.second
         /** How large are the circles used to display the positions of the entities in the city. */
         val ENTITY_RADIUS_PX: Double = 5D
     /**
