@@ -5,19 +5,19 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="55825d0a-eb5d-488e-a6ac-f6809c2fcfff" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/ex-02/src/main/scala/actor/ViewActor.scala" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ex-02/src/main/resources/logback.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ex-02/src/main/scala/CreateCity.scala" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ex-02/src/main/scala/StartCluster.scala" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.bsp/sbt.json" beforeDir="false" afterPath="$PROJECT_DIR$/.bsp/sbt.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/modules/assignment03-build.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/modules/assignment03-build.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/modules/assignment03.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/modules/assignment03.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/modules/exercise01.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/modules/exercise01.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/modules/exercise02.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/modules/exercise02.iml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ex-02/src/main/resources/main.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/ex-02/src/main/resources/main.fxml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ex-02/src/main/scala/App.scala" beforeDir="false" afterPath="$PROJECT_DIR$/ex-02/src/main/scala/App.scala" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build.sbt" beforeDir="false" afterPath="$PROJECT_DIR$/build.sbt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ex-02/src/main/scala/App.scala" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/ex-02/src/main/scala/Gui.scala" beforeDir="false" afterPath="$PROJECT_DIR$/ex-02/src/main/scala/Gui.scala" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/ex-02/src/main/scala/actor/CityActor.scala" beforeDir="false" afterPath="$PROJECT_DIR$/ex-02/src/main/scala/actor/CityActor.scala" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/ex-02/src/main/scala/actor/FireStationActor.scala" beforeDir="false" afterPath="$PROJECT_DIR$/ex-02/src/main/scala/actor/FireStationActor.scala" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/ex-02/src/main/scala/actor/PluviometerActor.scala" beforeDir="false" afterPath="$PROJECT_DIR$/ex-02/src/main/scala/actor/PluviometerActor.scala" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ex-02/src/main/scala/actor/ViewActor.scala" beforeDir="false" afterPath="$PROJECT_DIR$/ex-02/src/main/scala/actor/ViewActor.scala" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/ex-02/src/main/scala/actor/ZoneActor.scala" beforeDir="false" afterPath="$PROJECT_DIR$/ex-02/src/main/scala/actor/ZoneActor.scala" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/ex-02/src/main/scala/configuration/C.scala" beforeDir="false" afterPath="$PROJECT_DIR$/ex-02/src/main/scala/configuration/C.scala" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/ex-02/src/main/scala/view/MainFXController.scala" beforeDir="false" afterPath="$PROJECT_DIR$/ex-02/src/main/scala/view/MainFXController.scala" afterDir="false" />
@@ -76,7 +76,6 @@
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
   <component name="HighlightingSettingsPerFile">
-    <setting file="file://$PROJECT_DIR$/ex-02/src/main/scala/App.scala" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/ex-02/src/main/scala/actor/CityActor.scala" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/ex-02/src/main/scala/actor/FireStationActor.scala" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/ex-02/src/main/scala/actor/PluviometerActor.scala" root0="FORCE_HIGHLIGHTING" />
@@ -109,7 +108,7 @@
     &quot;project.structure.side.proportion&quot;: &quot;0.2&quot;,
     &quot;run.code.analysis.last.selected.profile&quot;: &quot;pProject Default&quot;,
     &quot;scala_project_settings_configurable.last_selected_tab_index&quot;: &quot;1&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.JavaFX&quot;
+    &quot;settings.editor.selected.configurable&quot;: &quot;nele.options&quot;
   }
 }</component>
   <component name="RecentsManager">
@@ -121,53 +120,31 @@
       <recent name="C:\Users\Public\Documents\Projects\pcd-03\ex-02\src\main\scala\mvc\domain" />
     </key>
     <key name="CopyClassDialog.RECENTS_KEY">
+      <recent name="" />
       <recent name="mvc.actor" />
       <recent name="mvc" />
     </key>
   </component>
   <component name="RunManager" selected="Application.Gui">
-    <configuration name="Gui" type="Application" factoryName="Application" temporary="true">
-      <option name="MAIN_CLASS_NAME" value="Gui" />
-      <module name="exercise02" />
+    <configuration name="App" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="App" />
+      <module name="exercise01" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="Run" type="Application" factoryName="Application" temporary="true">
-      <option name="MAIN_CLASS_NAME" value="Run" />
-      <module name="exercise02" />
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
-    <configuration name="joinCluster" type="Application" factoryName="Application" temporary="true">
-      <option name="MAIN_CLASS_NAME" value="joinCluster" />
-      <module name="exercise02" />
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
-    <configuration name="main" type="Application" factoryName="Application" temporary="true">
-      <option name="MAIN_CLASS_NAME" value="main" />
-      <module name="exercise02" />
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
-    <configuration name="main2" type="Application" factoryName="Application" temporary="true">
-      <option name="MAIN_CLASS_NAME" value="main2" />
-      <module name="exercise02" />
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
+    <list>
+      <item itemvalue="Application.CreateCity" />
+      <item itemvalue="Application.Gui" />
+      <item itemvalue="Application.StartCluster" />
+      <item itemvalue="Application.App" />
+    </list>
     <recent_temporary>
       <list>
+        <item itemvalue="Application.App" />
+        <item itemvalue="Application.StartCluster" />
         <item itemvalue="Application.Gui" />
-        <item itemvalue="Application.main" />
-        <item itemvalue="Application.Run" />
-        <item itemvalue="Application.joinCluster" />
-        <item itemvalue="Application.main2" />
+        <item itemvalue="Application.CreateCity" />
       </list>
     </recent_temporary>
   </component>
@@ -199,6 +176,9 @@
       <updated>1661245360991</updated>
     </task>
     <servers />
+  </component>
+  <component name="UnknownFeatures">
+    <option featureType="com.intellij.fileTypeFactory" implementationName="*.log" />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
     <option name="TAB_STATES">

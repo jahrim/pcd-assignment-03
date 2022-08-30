@@ -215,6 +215,8 @@ object ZoneActor:
       val zone = Zone(position, width, height, id)
       zone.become(State.fromOrdinal(state))
       zone
+    override def toString: String =
+      s"ZoneData(id:$id, position:$position, width:${width.pretty}, height:${height.pretty}, state:${State.fromOrdinal(state)})"
 
   /**
    * Model a collection of the actors known by a zone.

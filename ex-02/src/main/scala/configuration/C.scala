@@ -1,7 +1,10 @@
 package configuration
 
 import javafx.scene.paint.Color
+
 import java.util.Locale
+import java.util.concurrent.Executors
+import scala.concurrent.ExecutionContext
 import scala.concurrent.duration.*
 
 /**
@@ -18,12 +21,8 @@ object C:
             val HEIGHT: Double = 100d
             /** The width of the city. */
             val WIDTH: Double = 100d
-            /** The area of the city. */
-            val AREA: Double = HEIGHT * WIDTH
         /** The number of zones that the city is composed of. */
         val NUMBER_OF_ZONES: Int = 6
-        /** The number of fire stations that are present in the city. */
-        val NUMBER_OF_FIRE_STATIONS: Int = NUMBER_OF_ZONES
         /** How much time passes between two snapshots taken by the city actor. */
         val SNAPSHOT_PERIOD: FiniteDuration = 1.second
 
@@ -53,8 +52,6 @@ object C:
      * Model the configuration for the fire-stations in this application.
      */
     object FireStation:
-        /** How much it takes for a fire station to be prepared to take care of an alarm. */
-        val PREPARATION_DURATION: FiniteDuration = 5.second
         /** How much it takes for a fire station to take care of an alarm. */
         val INTERVENTION_DURATION: FiniteDuration = 10.second
 
@@ -88,6 +85,7 @@ object C:
         val RECONNECTION_PERIOD: FiniteDuration = 2.second
         /** How large are the circles used to display the positions of the entities in the city. */
         val ENTITY_RADIUS_PX: Double = 5D
+
     /**
      * Model the configuration for the logs of this application.
      */
@@ -95,3 +93,10 @@ object C:
         /** How many decimals will have doubles when they are prettily formatted. */
         val PRETTY_DOUBLE_DECIMALS: Int = 2
         extension(d: Double) def pretty: String = String.format(Locale.US, s"%.${PRETTY_DOUBLE_DECIMALS}f", d)
+
+    /**
+     * Model the configuration for concurrent executions inside this application.
+     */
+    object Concurrency:
+        /** The execution context where Futures are executed in this application. */
+        given ExecutionContext = ExecutionContext.fromExecutor(Executors.newSingleThreadExecutor())

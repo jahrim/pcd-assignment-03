@@ -11,6 +11,7 @@ import javafx.scene.input.MouseEvent
 import javafx.scene.paint.Color
 import scalafx.Includes.*
 import actor.CityActor.ViewRef
+import scala.concurrent.Future
 import actor.ViewActor.DisableAlarm
 import util.Point2D
 import view.MainFXController.*
@@ -18,11 +19,10 @@ import _root_.cluster.AkkaCluster
 import actor.ViewActor
 import com.typesafe.config.ConfigFactory
 import view.View.*
+import configuration.C.Concurrency.given_ExecutionContext
 
 import java.net.URL
 import java.util.ResourceBundle
-
-//todo fix canvas borders
 
 /**
  * Main controller of ths graphical user interface of this application.
@@ -41,23 +41,28 @@ class MainFXController extends Initializable:
   /** Close the application. */
   def exit(): Unit = Platform.exit()
   /**
+   * Set the view actor that handles this view to the specified actor.
+   * @param viewRef the specified actor
+   */
+  def setViewActor(viewRef: ViewRef): Unit = this.viewActor = Option(viewRef)
+  /**
    * Displays the specified snapshot of a system.
    * @param snapshot the specified snapshot
    */
-  def display(snapshot: Snapshot): Unit = display(SnapshotView(snapshot, this.canvas))
-  private def display(snapshot: SnapshotView): Unit = Platform.runLater(() => {
+  def display(snapshot: Snapshot): Unit = Platform.runLater(() => display(SnapshotView(snapshot, this.canvas)))
+  private def display(snapshot: SnapshotView): Unit =
     // the first time the system is displayed...
     if systemSnapshot.isEmpty then
       this.cityIdentifierInput.text = "Connection successful"
       this.simulationLabel.text = "Simulation"
+      this.clickedEntity = Option(snapshot.cityView)
     // refresh the clicked entity with the entity of the new snapshot with the same id
-    if this.clickedEntity.isDefined then this.clickedEntity = snapshot.searchById(this.clickedEntity.get)
+    this.clickedEntity = snapshot.searchById(this.clickedEntity.get)
     this.displayClickedEntity()
     // draw each entity
     val painter = canvas.getGraphicsContext2D
     painter.refresh(snapshot.toList.foreach(d => painter.colored(d.borderColor, d.color)(painter.draw(d))))
     this.systemSnapshot = Option(snapshot)
-  })
   /** Displays the current clicked entity. */
   private def displayClickedEntity(): Unit =
     this.disableAlarmButton.disable = this.clickedEntity match
@@ -86,7 +91,7 @@ class MainFXController extends Initializable:
     case "" => throw new IllegalArgumentException("You cannot connect to a city without specifying its identifier.")
     case cityId =>
       this.simulationLabel.text = "Connecting..."
-      cluster.join(ViewActor(this, cityId))   //todo delegate to thread worker
+      Future { cluster.join(ViewActor(this, cityId)) }
       this.cityIdentifierInput.disable = true
       this.connectButton.disable = true
   @FXML private def disableAlarmButtonHandler(event: ActionEvent): Unit =

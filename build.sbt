@@ -55,6 +55,3 @@ lazy val exercise02 = (project in file("ex-02")).settings(
       .map(m => "org.openjfx" % s"javafx-$m" % "16" classifier osName)
   }
 )
-
-/* Tasks */
-// TODO add tasks

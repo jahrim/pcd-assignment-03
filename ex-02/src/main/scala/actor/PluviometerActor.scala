@@ -101,4 +101,6 @@ object PluviometerActor:
     threshold: Double,
     signal: Boolean,
     id: String = Id.newId
-  ) extends CborSerializable with Id
+  ) extends CborSerializable with Id:
+    override def toString: String =
+      s"PluviometerData(id:$id, position:$position, signal:$signal, measurement:${lastMeasurement.pretty}, threshold:${threshold.pretty})"

@@ -71,45 +71,44 @@ object CityActor:
     cluster.join(
       Behaviors.setup[Message] { context =>
         context.system.receptionist ! Register(ServiceKey[Message](city.id), context.self)
-        val children: CityChildren = CityChildren()
-        children.pluviometers = Map.from(snapshot.pluviometerDatas.keys.map(p => (p, context.spawnAnonymous(Routers.group(ServiceKey[PluviometerActor.Message](p))))))
-        children.fireStations = Map.from(snapshot.fireStationDatas.keys.map(f => (f, context.spawnAnonymous(Routers.group(ServiceKey[FireStationActor.Message](f))))))
-        children.zones = Map.from(snapshot.zoneDatas.keys.map(z => (z, context.spawnAnonymous(Routers.group(ServiceKey[ZoneActor.Message](z))))))
-        snapshot.toList.foreach(println)
-        Active(city, children, snapshot)
+        val cityActorCollection: CityActorCollection = CityActorCollection()
+        cityActorCollection.pluviometers = Map.from(snapshot.pluviometerDatas.keys.map(p => (p, context.spawnAnonymous(Routers.group(ServiceKey[PluviometerActor.Message](p))))))
+        cityActorCollection.fireStations = Map.from(snapshot.fireStationDatas.keys.map(f => (f, context.spawnAnonymous(Routers.group(ServiceKey[FireStationActor.Message](f))))))
+        cityActorCollection.zones = Map.from(snapshot.zoneDatas.keys.map(z => (z, context.spawnAnonymous(Routers.group(ServiceKey[ZoneActor.Message](z))))))
+        println("### City Actor Initialized ###\n" + snapshot)
+        Active(city, cityActorCollection, snapshot)
       }
     )
 
   /** Behavior where the city takes a snapshot of itself periodically, notifying the view in the process. */
   private[CityActor] object Active:
-    def apply(city: City, children: CityChildren, snapshot: Snapshot): Behavior[Message] =
+    def apply(city: City, cityActorCollection: CityActorCollection, snapshot: Snapshot): Behavior[Message] =
       Behaviors.setup { context =>
         Behaviors.withTimers { timers =>
           timers.startTimerWithFixedDelay(TakeSnapshot, TakeSnapshot, SNAPSHOT_PERIOD)
           Behaviors.receiveMessage {
             case TakeSnapshot =>
-              println(snapshot.cityData)
-              children.pluviometers.values.foreach(_ ! PluviometerActor.TakeSnapshot)
-              children.fireStations.values.foreach(_ ! FireStationActor.TakeSnapshot)
-              children.zones.values.foreach(_ ! ZoneActor.TakeSnapshot)
+              cityActorCollection.pluviometers.values.foreach(_ ! PluviometerActor.TakeSnapshot)
+              cityActorCollection.fireStations.values.foreach(_ ! FireStationActor.TakeSnapshot)
+              cityActorCollection.zones.values.foreach(_ ! ZoneActor.TakeSnapshot)
               Behaviors.same
             case NotifyPluviometerState(state) =>
-              children.views.values.foreach(_ ! ViewActor.ReceiveSnapshot(snapshot))
+              cityActorCollection.views.values.foreach(_ ! ViewActor.ReceiveSnapshot(snapshot))
               snapshot.pluviometerDatas = snapshot.pluviometerDatas + (state.id -> state)
-              Active(city, children, snapshot)
+              Active(city, cityActorCollection, snapshot)
             case NotifyFireStationState(state) =>
-              children.views.values.foreach(_ ! ViewActor.ReceiveSnapshot(snapshot))
+              cityActorCollection.views.values.foreach(_ ! ViewActor.ReceiveSnapshot(snapshot))
               snapshot.fireStationDatas = snapshot.fireStationDatas + (state.id -> state)
-              Active(city, children, snapshot)
+              Active(city, cityActorCollection, snapshot)
             case NotifyZoneState(state) =>
-              children.views.values.foreach(_ ! ViewActor.ReceiveSnapshot(snapshot))
+              cityActorCollection.views.values.foreach(_ ! ViewActor.ReceiveSnapshot(snapshot))
               snapshot.zoneDatas = snapshot.zoneDatas + (state.id -> state)
-              Active(city, children, snapshot)
+              Active(city, cityActorCollection, snapshot)
             case RegisterView(viewId) =>
               val view: ViewRef = context.spawnAnonymous(Routers.group(ServiceKey[ViewActor.Message](viewId)))
-              children.views = children.views + (viewId -> view)
+              cityActorCollection.views = cityActorCollection.views + (viewId -> view)
               view ! ViewActor.Registered
-              Active(city, children, snapshot)
+              Active(city, cityActorCollection, snapshot)
           }
         }
       }
@@ -139,6 +138,7 @@ object CityActor:
   case class CityData(position: Point2D, width: Double, height: Double, id: String) extends CborSerializable with Id:
     /** @return the city represented by this data. */
     def city: City = City(position, width, height, id)
+    override def toString: String = s"CityData(id:$id, position:$position, width:$width, height:$height)"
 
   /**
    * Model a snapshot of all the entities inside a city with their state.
@@ -167,6 +167,7 @@ object CityActor:
      * @return an optional of the entity of this snapshot with the specified id
      */
     def searchById(id: String): Option[Id] = this.toList.find(_.id == id)
+    override def toString: String = "Snapshot:\n\t" + this.toList.map(_.toString).reduce(_ + "\n\t" + _)
 
   /**
    * Companion object of [[Snapshot]].
@@ -199,13 +200,14 @@ object CityActor:
 
   /**
    * Model a collection of the actors known by a city.
-   *
+   * @param cities       a map from the identifier to this city
    * @param views        a map from the identifiers to the view actors known by the city
    * @param pluviometers a map from the identifiers to the pluviometer actors known by the city
    * @param fireStations a map from the identifiers to the fire-station actors known by the city
    * @param zones        a map from the identifiers to the zone actors known by the city
    */
-  case class CityChildren(
+  case class CityActorCollection(
+    var cities: Map[String, CityRef] = Map(),
     var views: Map[String, ViewRef] = Map(),
     var pluviometers: Map[String, PluviometerRef] = Map(),
     var fireStations: Map[String, FireStationRef] = Map(),

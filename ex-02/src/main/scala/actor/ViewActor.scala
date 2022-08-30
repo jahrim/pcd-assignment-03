@@ -34,23 +34,24 @@ object ViewActor:
   def apply(viewController: MainFXController, cityId: String, viewId: String = Id.newId): Behavior[Message] =
     Behaviors.setup { context =>
       context.system.receptionist ! Receptionist.Register(ServiceKey[Message](viewId), context.self)
-      viewController.viewActor = Option(context.spawnAnonymous(Routers.group(ServiceKey[ViewActor.Message](viewId))))
+      viewController.setViewActor(context.spawnAnonymous(Routers.group(ServiceKey[ViewActor.Message](viewId))))
       Behaviors.withTimers { timers =>
         timers.startTimerAtFixedRate(RegisterSelf, RegisterSelf, RECONNECTION_PERIOD)
         timers.startTimerAtFixedRate(FailedConnection, FailedConnection, CONNECTION_TIMEOUT)
-        Active(viewId, viewController, context.spawnAnonymous(Routers.group(ServiceKey[CityActor.Message](cityId))))
+        val cityActorCollection = CityActorCollection()
+        cityActorCollection.cities = cityActorCollection.cities + (cityId -> context.spawnAnonymous(Routers.group(ServiceKey[CityActor.Message](cityId))))
+        Active(viewId, viewController, cityActorCollection)
       }
     }
 
   /** Behavior where the city takes a snapshot of itself periodically, notifying the view in the process. */
   private[ViewActor] object Active:
-    def apply(viewId: String, viewController: MainFXController, city: CityRef, children: CityChildren = CityChildren()): Behavior[Message] =
-      println(s"ViewActor: $children")
+    def apply(viewId: String, viewController: MainFXController, cityActorCollection: CityActorCollection): Behavior[Message] =
       Behaviors.setup { context =>
         Behaviors.withTimers { timers =>
           Behaviors.receiveMessage {
             case RegisterSelf =>
-              city ! CityActor.RegisterView(viewId)
+              cityActorCollection.cities.head._2 ! CityActor.RegisterView(viewId)
               Behaviors.same
             case Registered =>
               timers.cancel(RegisterSelf)
@@ -64,15 +65,15 @@ object ViewActor:
               viewController.display(snapshot)
               Behaviors.same
             case DisableAlarm(zoneId) =>
-              children.zones.get(zoneId) match
+              cityActorCollection.zones.get(zoneId) match
                 case Some(zone) =>
                   zone ! Solved
                   Behaviors.same
                 case None =>
                   val zone: ZoneRef = context.spawnAnonymous(Routers.group(ServiceKey[ZoneActor.Message](zoneId)))
-                  children.zones = children.zones + (zoneId -> zone)
+                  cityActorCollection.zones = cityActorCollection.zones + (zoneId -> zone)
                   zone ! Solved
-                  Active(viewId, viewController, city, children)
+                  Active(viewId, viewController, cityActorCollection)
             case _ => Behaviors.unhandled
           }
         }

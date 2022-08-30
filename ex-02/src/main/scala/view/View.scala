@@ -98,6 +98,8 @@ object View:
    */
   case class CityView(private val c: CityData, shape: Rectangle) extends Drawable[Rectangle]:
     export c.{id, position, width, height}
+    override def toString: String =
+      s"City:\n  id: ${c.id}\n  position: ${c.position}\n  width: ${c.width.pretty},\n  height: ${c.height.pretty}"
 
   /**
    * Model a view representing the data of a pluviometer.

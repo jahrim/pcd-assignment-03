@@ -128,3 +128,5 @@ object FireStationActor:
       val fireStation = FireStation(position, id)
       fireStation.become(State.fromOrdinal(state))
       fireStation
+    override def toString: String =
+      s"FireStationData(id:$id, position:$position, state:${State.fromOrdinal(state)})"
