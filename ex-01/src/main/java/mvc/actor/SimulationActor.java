@@ -59,7 +59,7 @@ public class SimulationActor {
             }
         }
 
-    public static Behavior<SimulationActorMessage> create() { return Behaviors.logMessages(Behaviors.setup(Listening::new)); }
+    public static Behavior<SimulationActorMessage> create() { return Behaviors.setup(Listening::new); }
     private SimulationActor() {}
 
     /** Model the behavior where the simulation actor is accepting messages. */

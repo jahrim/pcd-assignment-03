@@ -5,23 +5,13 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="55825d0a-eb5d-488e-a6ac-f6809c2fcfff" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/ex-02/src/main/resources/logback.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ex-02/src/main/scala/CreateCity.scala" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ex-02/src/main/scala/StartCluster.scala" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.bsp/sbt.json" beforeDir="false" afterPath="$PROJECT_DIR$/.bsp/sbt.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/modules/exercise01.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/modules/exercise01.iml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build.sbt" beforeDir="false" afterPath="$PROJECT_DIR$/build.sbt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ex-02/src/main/scala/App.scala" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/ex-02/src/main/scala/Gui.scala" beforeDir="false" afterPath="$PROJECT_DIR$/ex-02/src/main/scala/Gui.scala" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ex-02/src/main/scala/actor/CityActor.scala" beforeDir="false" afterPath="$PROJECT_DIR$/ex-02/src/main/scala/actor/CityActor.scala" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ex-02/src/main/scala/actor/FireStationActor.scala" beforeDir="false" afterPath="$PROJECT_DIR$/ex-02/src/main/scala/actor/FireStationActor.scala" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ex-02/src/main/scala/actor/PluviometerActor.scala" beforeDir="false" afterPath="$PROJECT_DIR$/ex-02/src/main/scala/actor/PluviometerActor.scala" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ex-02/src/main/scala/actor/ViewActor.scala" beforeDir="false" afterPath="$PROJECT_DIR$/ex-02/src/main/scala/actor/ViewActor.scala" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ex-02/src/main/scala/actor/ZoneActor.scala" beforeDir="false" afterPath="$PROJECT_DIR$/ex-02/src/main/scala/actor/ZoneActor.scala" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ex-02/src/main/scala/configuration/C.scala" beforeDir="false" afterPath="$PROJECT_DIR$/ex-02/src/main/scala/configuration/C.scala" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ex-02/src/main/scala/view/MainFXController.scala" beforeDir="false" afterPath="$PROJECT_DIR$/ex-02/src/main/scala/view/MainFXController.scala" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ex-02/src/main/scala/view/View.scala" beforeDir="false" afterPath="$PROJECT_DIR$/ex-02/src/main/scala/view/View.scala" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/assignment03/.idea/scala_settings.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/assignment03/.idea/workspace.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/ex-01/src/main/java/mvc/actor/SimulationActor.java" beforeDir="false" afterPath="$PROJECT_DIR$/ex-01/src/main/java/mvc/actor/SimulationActor.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ex-01/src/test/java/JUnitTemplateTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/ex-01/src/test/java/JUnitTemplateTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ex-01/src/test/java/util/ListUtilTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/ex-01/src/test/java/util/ListUtilTest.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -69,6 +59,7 @@
       <list>
         <option value="Scala Trait" />
         <option value="Class" />
+        <option value="Package Object" />
       </list>
     </option>
   </component>
@@ -125,9 +116,29 @@
       <recent name="mvc" />
     </key>
   </component>
-  <component name="RunManager" selected="Application.Gui">
+  <component name="RunManager" selected="Application.App">
     <configuration name="App" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="App" />
+      <module name="exercise01" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="Application" type="Application" factoryName="Application" temporary="true">
+      <option name="MAIN_CLASS_NAME" value="main.Application" />
+      <module name="exercise01" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="main.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="SimulationBenchmark" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="SimulationBenchmark" />
       <module name="exercise01" />
       <method v="2">
         <option name="Make" enabled="true" />
@@ -137,14 +148,15 @@
       <item itemvalue="Application.CreateCity" />
       <item itemvalue="Application.Gui" />
       <item itemvalue="Application.StartCluster" />
+      <item itemvalue="Application.Application" />
+      <item itemvalue="Application.SimulationBenchmark" />
       <item itemvalue="Application.App" />
     </list>
     <recent_temporary>
       <list>
         <item itemvalue="Application.App" />
-        <item itemvalue="Application.StartCluster" />
-        <item itemvalue="Application.Gui" />
-        <item itemvalue="Application.CreateCity" />
+        <item itemvalue="Application.Application" />
+        <item itemvalue="Application.SimulationBenchmark" />
       </list>
     </recent_temporary>
   </component>
