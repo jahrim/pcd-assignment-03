@@ -4,15 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="55825d0a-eb5d-488e-a6ac-f6809c2fcfff" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/modules/exercise01.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/modules/exercise01.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/assignment03/.idea/scala_settings.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/assignment03/.idea/workspace.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/ex-01/src/main/java/mvc/actor/SimulationActor.java" beforeDir="false" afterPath="$PROJECT_DIR$/ex-01/src/main/java/mvc/actor/SimulationActor.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ex-01/src/test/java/JUnitTemplateTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/ex-01/src/test/java/JUnitTemplateTest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ex-01/src/test/java/util/ListUtilTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/ex-01/src/test/java/util/ListUtilTest.java" afterDir="false" />
-    </list>
+    <list default="true" id="55825d0a-eb5d-488e-a6ac-f6809c2fcfff" name="Changes" comment="" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
