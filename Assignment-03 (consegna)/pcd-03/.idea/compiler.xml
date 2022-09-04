@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="CompilerConfiguration">
+    <bytecodeTargetLevel>
+      <module name="assignment03" target="1.11" />
+      <module name="exercise01" target="1.11" />
+      <module name="exercise02" target="1.11" />
+    </bytecodeTargetLevel>
+  </component>
+</project>

@@ -1,0 +1,9 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="Gui" type="Application" factoryName="Application" singleton="false">
+    <option name="MAIN_CLASS_NAME" value="Gui" />
+    <module name="exercise02" />
+    <method v="2">
+      <option name="Make" enabled="true" />
+    </method>
+  </configuration>
+</component>
