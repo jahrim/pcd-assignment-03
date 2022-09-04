@@ -65,8 +65,10 @@ object C:
         object Colors:
             /** The color of the border of the entities in the city. */
             val ENTITY_BORDER: Color = Color.BLACK
-            /** The color of the pluviometers in the city. */
-            val PLUVIOMETER: Color = Color.SKYBLUE
+            /** The color of the pluviometers not emitting a signal in the city. */
+            val PLUVIOMETER_OFF: Color = Color.SKYBLUE
+            /** The color of the pluviometers emitting a signal in the city. */
+            val PLUVIOMETER_ON: Color = Color.RED
             /** The color of the fire-stations in the city, when they are available. */
             val FIRESTATION_AVAILABLE: Color = Color.LIGHTGREEN
             /** The color of the fire-stations in the city, when they are busy. */

@@ -23,7 +23,7 @@ object Gui extends JFXApp3:
     val root: jfxs.Parent = loader.load[jfxs.Parent]
 
     stage = new PrimaryStage() {
-      title = "FXML GridPane Demo"
+      title = "City Viewer"
       scene = new Scene(root)
     }
   override def stopApp(): Unit = System.exit(0)

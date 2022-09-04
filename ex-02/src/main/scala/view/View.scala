@@ -109,7 +109,7 @@ object View:
   case class PluviometerView(private val p: PluviometerData, shape: Circle) extends Drawable[Circle]:
     export p.{id, position, signal, lastMeasurement, threshold}
     override def borderColor: Color = Colors.ENTITY_BORDER
-    override def color: Color = Colors.PLUVIOMETER
+    override def color: Color = if p.signal then Colors.PLUVIOMETER_ON else Colors.PLUVIOMETER_OFF
     override def toString: String =
       s"Pluviometer:\n  id: ${p.id}\n  position: ${p.position}\n  signal: ${p.signal},\n  measurement: ${p.lastMeasurement.pretty},\n  threshold: ${p.threshold.pretty}"
 
