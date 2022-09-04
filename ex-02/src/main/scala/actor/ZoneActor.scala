@@ -24,8 +24,8 @@ object ZoneActor:
    * Model the messages of a zone actor.
    */
   trait Message extends CborSerializable
-  /** Tells this actor to take a snapshot of its state. */
-  case object TakeSnapshot extends Message
+  /** Tells this actor to take a snapshot of its state and forward it to the specified city. */
+  case class TakeSnapshot(city: CityRef) extends Message
   /** Tells this zone actor that the specified pluviometer has emitted the specified signal. */
   case class Signal(pluviometerId: String, on: Boolean) extends Message
   /** Asks this zone actor if the specified fire-station can take care of his alarm. */
@@ -35,29 +35,28 @@ object ZoneActor:
   /** Tells this zone actor request the signals of his pluviometers. */
   private[ZoneActor] case object RequestSignals extends Message
   /** Tells this zone actor to alert all of his fire-stations that he is under alarm. */
-  private[ZoneActor] case object AlertFirestations extends Message
+  private[ZoneActor] case object AlertFireStations extends Message
 
   /**
    * @param zone           the initial state of this zone
-   * @param cityId         the identifier of the city this zone belongs to
    * @param pluviometerIds the identifiers of the pluviometers in this zone
    * @param fireStationIds the identifiers of the fire-stations in this zone
    */
-  def apply(zone: Zone, cityId: String, pluviometerIds: List[String], fireStationIds: List[String]): Behavior[Message] =
+  def apply(zone: Zone, pluviometerIds: List[String], fireStationIds: List[String]): Behavior[Message] =
     Behaviors.setup { context =>
       context.system.receptionist ! Register(ServiceKey[Message](zone.id), context.self)
-      val children: ZoneChildren = ZoneChildren()
-      children.pluviometers = pluviometerIds.map(id => context.spawnAnonymous(Routers.group(ServiceKey[PluviometerActor.Message](id))))
-      children.fireStations = fireStationIds.map(id => context.spawnAnonymous(Routers.group(ServiceKey[FireStationActor.Message](id))))
+      val cityActorCollection: CityActorCollection = CityActorCollection()
+      cityActorCollection.pluviometers = Map.from(pluviometerIds.map(id => id -> context.spawnAnonymous(Routers.group(ServiceKey[PluviometerActor.Message](id)))))
+      cityActorCollection.fireStations = Map.from(fireStationIds.map(id => id -> context.spawnAnonymous(Routers.group(ServiceKey[FireStationActor.Message](id)))))
       Behaviors.withTimers { timers =>
         timers.startTimerWithFixedDelay(RequestSignals, RequestSignals, MEASUREMENT_PERIOD)
-        CalmBehavior(zone, context.spawnAnonymous(Routers.group(ServiceKey[CityActor.Message](cityId))), Map.from(pluviometerIds.map((_, false))), children)
+        CalmBehavior(zone, Map.from(pluviometerIds.map((_, false))), cityActorCollection)
       }
     }
 
   /** Behavior where this zone actor collects the signals from his pluviometers and evaluates their majority. */
   private[ZoneActor] object CalmBehavior:
-    def apply(zone: Zone, city: CityRef, signals: Map[String, Boolean], children: ZoneChildren): Behavior[Message] =
+    def apply(zone: Zone, signals: Map[String, Boolean], cityActorCollection: CityActorCollection): Behavior[Message] =
       Behaviors.setup { context =>
         zone.become(Calm)
         Behaviors.receiveMessage {
@@ -66,14 +65,14 @@ object ZoneActor:
             updatedMap.values.partition(s => s) match
               case (on, off) if on.size >= off.size =>
                 Behaviors.withTimers { timers =>
-                  timers.startTimerWithFixedDelay(AlertFirestations, AlertFirestations, ALERT_PERIOD)
-                  AlarmedBehavior(zone, city, updatedMap, children)
+                  timers.startTimerWithFixedDelay(AlertFireStations, AlertFireStations, ALERT_PERIOD)
+                  AlarmedBehavior(zone, updatedMap, cityActorCollection)
                 }
-              case _ => CalmBehavior(zone, city, updatedMap, children)
+              case _ => CalmBehavior(zone, updatedMap, cityActorCollection)
           case RequestSignals =>
-            children.pluviometers.foreach(_ ! RequestSignal(context.self))
+            cityActorCollection.pluviometers.values.foreach(_ ! RequestSignal(context.self))
             Behaviors.same
-          case TakeSnapshot =>
+          case TakeSnapshot(city) =>
             city ! NotifyZoneState(zone.data)
             Behaviors.same
           case _ => Behaviors.unhandled
@@ -85,25 +84,25 @@ object ZoneActor:
    * until a fire-station takes control of his situation.
    */
   private[ZoneActor] object AlarmedBehavior:
-    def apply(zone: Zone, city: CityRef, signals: Map[String, Boolean], children: ZoneChildren): Behavior[Message] =
+    def apply(zone: Zone, signals: Map[String, Boolean], cityActorCollection: CityActorCollection): Behavior[Message] =
       Behaviors.setup { context =>
         zone.become(Alarmed)
         Behaviors.receiveMessage {
-          case Signal(sensor, signal) => AlarmedBehavior(zone, city, signals + (sensor -> signal), children)
+          case Signal(sensor, signal) => AlarmedBehavior(zone, signals + (sensor -> signal), cityActorCollection)
           case RequestSignals =>
-            children.pluviometers.foreach(_ ! RequestSignal(context.self))
+            cityActorCollection.pluviometers.values.foreach(_ ! RequestSignal(context.self))
             Behaviors.same
-          case TakeSnapshot =>
+          case TakeSnapshot(city) =>
             city ! NotifyZoneState(zone.data)
             Behaviors.same
-          case AlertFirestations =>
-            children.fireStations.foreach(_ ! Alert(context.self))
+          case AlertFireStations =>
+            cityActorCollection.fireStations.values.foreach(_ ! Alert(context.self))
             Behaviors.same
           case DepartureRequest(fireStation) =>
             fireStation ! Depart(context.self)
             Behaviors.withTimers{ timers =>
-              timers.cancel(AlertFirestations)
-              MonitoredBehavior(zone, city, signals, children, monitoredBy = fireStation)
+              timers.cancel(AlertFireStations)
+              MonitoredBehavior(zone, signals, cityActorCollection, monitoredBy = fireStation)
             }
           case _ => Behaviors.unhandled
         }
@@ -111,20 +110,20 @@ object ZoneActor:
 
   /** Behavior where this zone actor is waiting for a specific fire-station to solve his situation. */
   private[ZoneActor] object MonitoredBehavior:
-    def apply(zone: Zone, city: CityRef, signals: Map[String, Boolean], children: ZoneChildren, monitoredBy: FireStationRef): Behavior[Message] =
+    def apply(zone: Zone, signals: Map[String, Boolean], cityActorCollection: CityActorCollection, monitoredBy: FireStationRef): Behavior[Message] =
       Behaviors.setup { context =>
         zone.become(Monitored)
         Behaviors.receiveMessage {
-          case Signal(sensor, signal) => MonitoredBehavior(zone, city, signals + (sensor -> signal), children, monitoredBy)
+          case Signal(sensor, signal) => MonitoredBehavior(zone, signals + (sensor -> signal), cityActorCollection, monitoredBy)
           case RequestSignals =>
-            children.pluviometers.foreach(_ ! RequestSignal(context.self))
+            cityActorCollection.pluviometers.values.foreach(_ ! RequestSignal(context.self))
             Behaviors.same
-          case TakeSnapshot =>
+          case TakeSnapshot(city) =>
             city ! NotifyZoneState(zone.data)
             Behaviors.same
           case Solved =>
             monitoredBy ! Return
-            CalmBehavior(zone, city, signals, children)
+            CalmBehavior(zone, signals, cityActorCollection)
           case _ => Behaviors.unhandled
         }
       }
@@ -217,14 +216,3 @@ object ZoneActor:
       zone
     override def toString: String =
       s"ZoneData(id:$id, position:$position, width:${width.pretty}, height:${height.pretty}, state:${State.fromOrdinal(state)})"
-
-  /**
-   * Model a collection of the actors known by a zone.
-   *
-   * @param pluviometers a list of the pluviometer actors known by the zone
-   * @param fireStations a list of the fire-station actors known by the zone
-   */
-  case class ZoneChildren(
-    var pluviometers: List[PluviometerRef] = List(),
-    var fireStations: List[FireStationRef] = List(),
-  )

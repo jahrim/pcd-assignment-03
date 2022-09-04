@@ -59,14 +59,14 @@ object CityActor:
       val fireStations = List.fill(1)(FireStation.random(zone))
       pluviometers foreach { p =>
         snapshot.pluviometerDatas = snapshot.pluviometerDatas + (p.id -> p.data)
-        cluster.join(PluviometerActor(p, city.id))
+        cluster.join(PluviometerActor(p))
       }
       fireStations foreach { f =>
         snapshot.fireStationDatas = snapshot.fireStationDatas + (f.id -> f.data)
-        cluster.join(FireStationActor(f, city.id))
+        cluster.join(FireStationActor(f))
       }
       snapshot.zoneDatas = snapshot.zoneDatas + (zone.id -> zone.data)
-      cluster.join(ZoneActor(zone, city.id, pluviometers.map(_.id), fireStations.map(_.id)))
+      cluster.join(ZoneActor(zone, pluviometers.map(_.id), fireStations.map(_.id)))
     }
     cluster.join(
       Behaviors.setup[Message] { context =>
@@ -88,9 +88,9 @@ object CityActor:
           timers.startTimerWithFixedDelay(TakeSnapshot, TakeSnapshot, SNAPSHOT_PERIOD)
           Behaviors.receiveMessage {
             case TakeSnapshot =>
-              cityActorCollection.pluviometers.values.foreach(_ ! PluviometerActor.TakeSnapshot)
-              cityActorCollection.fireStations.values.foreach(_ ! FireStationActor.TakeSnapshot)
-              cityActorCollection.zones.values.foreach(_ ! ZoneActor.TakeSnapshot)
+              cityActorCollection.pluviometers.values.foreach(_ ! PluviometerActor.TakeSnapshot(context.self))
+              cityActorCollection.fireStations.values.foreach(_ ! FireStationActor.TakeSnapshot(context.self))
+              cityActorCollection.zones.values.foreach(_ ! ZoneActor.TakeSnapshot(context.self))
               Behaviors.same
             case NotifyPluviometerState(state) =>
               cityActorCollection.views.values.foreach(_ ! ViewActor.ReceiveSnapshot(snapshot))
@@ -199,12 +199,12 @@ object CityActor:
       snapshot
 
   /**
-   * Model a collection of the actors known by a city.
-   * @param cities       a map from the identifier to this city
-   * @param views        a map from the identifiers to the view actors known by the city
-   * @param pluviometers a map from the identifiers to the pluviometer actors known by the city
-   * @param fireStations a map from the identifiers to the fire-station actors known by the city
-   * @param zones        a map from the identifiers to the zone actors known by the city
+   * Model a collection of the actors known within a city.
+   * @param cities       a map from the identifiers to the city actors known within the city
+   * @param views        a map from the identifiers to the view actors known within the city
+   * @param pluviometers a map from the identifiers to the pluviometer actors known within the city
+   * @param fireStations a map from the identifiers to the fire-station actors known within the city
+   * @param zones        a map from the identifiers to the zone actors known within the city
    */
   case class CityActorCollection(
     var cities: Map[String, CityRef] = Map(),

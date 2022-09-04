@@ -25,38 +25,37 @@ object FireStationActor:
    * Model the messages of a fire-station actor.
    */
   trait Message extends CborSerializable
+  /** Tells this actor to take a snapshot of its state and forward it to the specified city. */
+  case class TakeSnapshot(city: CityRef) extends Message
   /** Tells this fire-station actor that the specified zone is under alarm. */
   case class Alert(zone: ZoneRef) extends Message
   /** Tells this fire-station actor to depart towards the specified zone. */
   case class Depart(zone: ZoneRef) extends Message
   /** Tells this fire-station actor to return his fire-fighters back to the station. */
   case object Return extends Message
-  /** Tells this actor to take a snapshot of its state. */
-  case object TakeSnapshot extends Message
   /** Tells this fire-station actor to notify the zone which he is taking care of that its alarm has been solved. */
   private[FireStationActor] case object SolveAlarm extends Message
 
   /**
    * @param fireStation the initial state of this fire-station actor
-   * @param cityId      the identifier of the city this fire-station belongs to
    */
-  def apply(fireStation: FireStation, cityId: String): Behavior[Message] =
+  def apply(fireStation: FireStation): Behavior[Message] =
     Behaviors.setup { context =>
       context.system.receptionist ! Register(ServiceKey[Message](fireStation.id), context.self)
-      AvailableBehavior(fireStation, context.spawnAnonymous(Routers.group(ServiceKey[CityActor.Message](cityId))))
+      AvailableBehavior(fireStation)
     }
 
   /** Behavior where the fire-fighters of this fire-station are at the station. */
   private[FireStationActor] object AvailableBehavior:
-    def apply(fireStation: FireStation, city: CityRef): Behavior[Message] =
+    def apply(fireStation: FireStation): Behavior[Message] =
       Behaviors.setup { context =>
         fireStation.become(Available)
         Behaviors.receiveMessage {
           case Alert(zone) =>
             zone ! DepartureRequest(context.self)
             Behaviors.same
-          case Depart(zone) => BusyBehavior(fireStation, city, zone)
-          case TakeSnapshot =>
+          case Depart(zone) => BusyBehavior(fireStation, zone)
+          case TakeSnapshot(city) =>
             city ! NotifyFireStationState(fireStation.data)
             Behaviors.same
           case _ => Behaviors.unhandled
@@ -65,19 +64,19 @@ object FireStationActor:
 
   /** Behavior where the fire-fighters of this fire-station have departed to solve an emergency. */
   private[FireStationActor] object BusyBehavior:
-    def apply(fireStation: FireStation, city: CityRef, zone: ZoneRef): Behavior[Message] =
+    def apply(fireStation: FireStation, monitoredZone: ZoneRef): Behavior[Message] =
       Behaviors.setup { context =>
         fireStation.become(Busy)
         Behaviors.withTimers { timers =>
           timers.startTimerWithFixedDelay(SolveAlarm, SolveAlarm, INTERVENTION_DURATION)
           Behaviors.receiveMessage {
             case SolveAlarm =>
-              zone ! Solved
+              monitoredZone ! Solved
               Behaviors.same
             case Return =>
               timers.cancel(SolveAlarm)
-              AvailableBehavior(fireStation, city)
-            case TakeSnapshot =>
+              AvailableBehavior(fireStation)
+            case TakeSnapshot(city) =>
               city ! NotifyFireStationState(fireStation.data)
               Behaviors.same
             case _ => Behaviors.unhandled

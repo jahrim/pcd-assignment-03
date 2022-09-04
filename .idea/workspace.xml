@@ -4,7 +4,18 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="55825d0a-eb5d-488e-a6ac-f6809c2fcfff" name="Changes" comment="" />
+    <list default="true" id="55825d0a-eb5d-488e-a6ac-f6809c2fcfff" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/doc/resources/diagrams/CityActorStateDiagram.drawio" beforeDir="false" afterPath="$PROJECT_DIR$/doc/resources/diagrams/CityActorStateDiagram.drawio" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/doc/resources/diagrams/FireStationActorStateDiagram.drawio" beforeDir="false" afterPath="$PROJECT_DIR$/doc/resources/diagrams/FireStationActorStateDiagram.drawio" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/doc/resources/diagrams/PluviometerActorStateDiagram.drawio" beforeDir="false" afterPath="$PROJECT_DIR$/doc/resources/diagrams/PluviometerActorStateDiagram.drawio" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/doc/resources/diagrams/ViewActorStateDiagram.drawio" beforeDir="false" afterPath="$PROJECT_DIR$/doc/resources/diagrams/ViewActorStateDiagram.drawio" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/doc/resources/diagrams/ZoneActorStateDiagram.drawio" beforeDir="false" afterPath="$PROJECT_DIR$/doc/resources/diagrams/ZoneActorStateDiagram.drawio" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ex-02/src/main/scala/actor/CityActor.scala" beforeDir="false" afterPath="$PROJECT_DIR$/ex-02/src/main/scala/actor/CityActor.scala" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ex-02/src/main/scala/actor/FireStationActor.scala" beforeDir="false" afterPath="$PROJECT_DIR$/ex-02/src/main/scala/actor/FireStationActor.scala" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ex-02/src/main/scala/actor/PluviometerActor.scala" beforeDir="false" afterPath="$PROJECT_DIR$/ex-02/src/main/scala/actor/PluviometerActor.scala" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ex-02/src/main/scala/actor/ZoneActor.scala" beforeDir="false" afterPath="$PROJECT_DIR$/ex-02/src/main/scala/actor/ZoneActor.scala" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -108,7 +119,7 @@
       <recent name="mvc" />
     </key>
   </component>
-  <component name="RunManager" selected="Application.App">
+  <component name="RunManager" selected="Application.Gui">
     <configuration name="App" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="App" />
       <module name="exercise01" />

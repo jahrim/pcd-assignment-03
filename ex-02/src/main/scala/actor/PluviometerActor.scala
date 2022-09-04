@@ -21,29 +21,28 @@ object PluviometerActor:
    * Model the messages of a pluviometer actor.
    */
   trait Message extends CborSerializable
+  /** Tells this actor to take a snapshot of its state and forward it to the specified city. */
+  case class TakeSnapshot(city: CityRef) extends Message
   /** Tells this pluviometer actor to take a measurement and forward the signal to the specified zone. */
   case class RequestSignal(zone: ZoneRef) extends Message
-  /** Tells this actor to take a snapshot of its state. */
-  case object TakeSnapshot extends Message
 
   /**
    * @param pluviometer the initial state of this pluviometer actor
-   * @param cityId      the identifier of the city this pluviometer belongs to
    */
-  def apply(pluviometer: Pluviometer, cityId: String): Behavior[Message] =
+  def apply(pluviometer: Pluviometer): Behavior[Message] =
     Behaviors.setup { context =>
       context.system.receptionist ! Register(ServiceKey[Message](pluviometer.id), context.self)
-      Active(pluviometer, context.spawnAnonymous(Routers.group(ServiceKey[CityActor.Message](cityId))))
+      Active(pluviometer)
     }
 
   /** Behavior where this pluviometer actor takes measurements under the requests of other actors. */
   private[PluviometerActor] object Active:
-    def apply(pluviometer: Pluviometer, city: CityRef): Behavior[Message] =
+    def apply(pluviometer: Pluviometer): Behavior[Message] =
       Behaviors.receiveMessage {
         case RequestSignal(zone) =>
           zone ! Signal(pluviometer.id, pluviometer.measureAndSignal)
           Behaviors.same
-        case TakeSnapshot =>
+        case TakeSnapshot(city) =>
           city ! NotifyPluviometerState(pluviometer.data)
           Behaviors.same
       }
